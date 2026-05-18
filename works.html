@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#020c1b">
+<title>Works — Spark Shums</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body id="top">
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="hud-corner hud-tl"></div>
+<div class="hud-corner hud-tr"></div>
+<div class="hud-corner hud-bl"></div>
+<div class="hud-corner hud-br"></div>
+<div class="techy-bg">
+  <div class="scanline"></div><div class="scanline"></div><div class="scanline"></div>
+</div>
+
+<div id="loader">
+  <canvas id="loaderCanvas" width="260" height="260"></canvas>
+  <div class="loader-label">Loading Works</div>
+  <div class="loader-pct" id="loaderPct">0%</div>
+</div>
+
+<header>
+  <a href="index.html" class="logo-mark">
+    <img src="logo.png" alt="Spark Shums" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(0,212,255,0.5);box-shadow:0 0 12px rgba(0,212,255,0.4);">
+  </a>
+  <nav class="nav-desktop">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="ceo.html">CEO</a>
+    <a href="works.html">Works</a>
+    <a href="achievements.html">Achievements</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <button class="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<nav class="nav-mobile">
+  <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="ceo.html">CEO</a>
+    <a href="works.html">Works</a>
+    <a href="achievements.html">Achievements</a>
+    <a href="contact.html">Contact</a>
+</nav>
+
+<div class="page-wrapper">
+  <div class="coming-soon fade-up">
+    <div class="cs-icon">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 7h-4V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zm-10-2h4v2h-4V5z"/>
+      </svg>
+    </div>
+    <h1>WORKS</h1>
+    <p>Our Portfolio & Projects</p>
+    <p style="margin-top:14px">— Coming Soon —</p>
+    <a href="index.html" class="back-btn">← Return Home</a>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+
+<!-- ===== FOOTER ===== -->
+<footer id="site-footer" style="padding-bottom:80px;">
+  <div class="footer-line"></div>
+  <div class="footer-inner">
+    <p class="footer-copy">
+      Copyright <span class="copy-sym">&copy;</span> 2018 &nbsp;&mdash;&nbsp; All Rights Reserved by <a href="index.html#top" class="footer-brand">Spark Shums</a>
+    </p>
+  </div>
+</footer>
+
+<!-- ===== SCROLL TO TOP ===== -->
+<button id="scrollTop" aria-label="Scroll to top">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+</body>
+</html>

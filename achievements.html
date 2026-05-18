@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta name="theme-color" content="#020c1b">
+<title>Achievements — Spark Shums</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script>
+// Must be defined early so onerror can call it
+function showPlaceholder(img){
+  const card = img.closest('.cert-card');
+  if(!card) return;
+  img.style.display = 'none';
+  if(card.querySelector('.cert-placeholder')) return;
+  const ph = document.createElement('div');
+  ph.className = 'cert-placeholder';
+  ph.innerHTML = '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Image Coming Soon</span>';
+  card.insertBefore(ph, card.querySelector('.cert-overlay'));
+}
+</script>
+<style>
+
+/* ── HERO ── */
+.ach-hero {
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:40px 24px 20px;
+  position:relative; z-index:10;
+}
+.ach-logo {
+  width:90px; height:90px; border-radius:50%;
+  border:2px solid rgba(0,212,255,0.5);
+  box-shadow:0 0 24px rgba(0,212,255,0.25);
+  overflow:hidden; margin-bottom:20px; position:relative;
+}
+.ach-logo::before {
+  content:''; position:absolute; inset:-8px; border-radius:50%;
+  border:1px solid rgba(0,212,255,0.18);
+  animation:spinRing 12s linear infinite;
+}
+@keyframes spinRing{ to{transform:rotate(360deg);} }
+.ach-logo img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+
+.ach-heading {
+  font-family:'Orbitron',monospace;
+  font-size:clamp(2rem,8vw,3.5rem); font-weight:900;
+  color:var(--white-cold); letter-spacing:0.08em;
+  text-shadow:0 0 30px rgba(0,212,255,0.3); margin-bottom:6px;
+}
+.ach-heading span { color:var(--blue-glow); text-shadow:var(--text-glow); }
+.ach-sub {
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.65rem; color:rgba(0,212,255,0.6);
+  letter-spacing:0.35em; text-transform:uppercase;
+}
+
+/* ── SHARED WRAP ── */
+.ach-wrap {
+  width:100%; max-width:1200px; margin:0 auto;
+  padding:36px 16px 10px;
+  position:relative; z-index:10;
+}
+@media(min-width:600px){ .ach-wrap{ padding:45px 40px 10px; } }
+@media(min-width:900px){ .ach-wrap{ padding:55px 60px 10px; } }
+
+.sec-div {
+  width:100%; height:1px; position:relative; z-index:10;
+  background:linear-gradient(90deg,transparent,rgba(0,212,255,0.2),transparent);
+}
+
+/* ── CATEGORY HEADING ── */
+.cat-heading-row {
+  display:flex; align-items:center; gap:16px; margin-bottom:28px;
+}
+.cat-heading-row::before {
+  content:''; display:block; width:32px; min-width:32px; height:2px;
+  background:var(--blue-glow); box-shadow:0 0 8px var(--blue-glow); flex-shrink:0;
+}
+.cat-heading-row::after {
+  content:''; flex:1; height:1px;
+  background:linear-gradient(90deg,rgba(0,212,255,0.3),transparent);
+}
+.cat-heading-row h2 {
+  font-family:'Orbitron',monospace;
+  font-size:clamp(0.85rem,2.5vw,1.3rem); font-weight:900;
+  color:var(--white-cold); letter-spacing:0.06em;
+  white-space:normal; line-height:1.2;
+}
+.cat-heading-row h2 span { color:var(--blue-glow); }
+.cat-count {
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.55rem; color:rgba(0,212,255,0.5);
+  letter-spacing:0.15em; white-space:nowrap; flex-shrink:0;
+  display:none;
+}
+@media(min-width:500px){ .cat-count{ display:block; } }
+
+/* ── CERTIFICATE GRID ── */
+.cert-grid {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-bottom:50px;
+}
+@media(min-width:600px){ .cert-grid{ grid-template-columns:repeat(3,1fr); gap:14px; } }
+@media(min-width:900px){ .cert-grid{ grid-template-columns:repeat(3,1fr); gap:18px; } }
+@media(min-width:1100px){ .cert-grid{ grid-template-columns:repeat(4,1fr); gap:20px; } }
+
+/* ── CERT CARD ── */
+.cert-card {
+  position:relative; cursor:pointer;
+  border:1px solid rgba(0,212,255,0.15);
+  background:rgba(0,15,30,0.5);
+  overflow:hidden;
+  aspect-ratio:4/3;
+  transition:transform .3s, border-color .3s, box-shadow .3s;
+}
+.cert-card:hover {
+  transform:scale(1.03);
+  border-color:rgba(0,212,255,0.5);
+  box-shadow:0 0 24px rgba(0,212,255,0.2);
+  z-index:2;
+}
+.cert-card img {
+  width:100%; height:100%;
+  object-fit:cover; display:block;
+  transition:filter .3s;
+  filter:brightness(0.9);
+}
+.cert-card:hover img { filter:brightness(1.05); }
+
+/* Overlay on hover */
+.cert-overlay {
+  position:absolute; inset:0;
+  background:rgba(0,10,24,0.0);
+  display:flex; align-items:center; justify-content:center;
+  transition:background .3s;
+}
+.cert-card:hover .cert-overlay { background:rgba(0,10,24,0.35); }
+.cert-overlay svg {
+  width:36px; height:36px;
+  stroke:var(--blue-glow); fill:none; stroke-width:1.5;
+  opacity:0; transform:scale(0.7);
+  transition:opacity .3s, transform .3s;
+  filter:drop-shadow(0 0 8px rgba(0,212,255,0.8));
+}
+.cert-card:hover .cert-overlay svg { opacity:1; transform:scale(1); }
+
+/* Certificate number label */
+.cert-num {
+  position:absolute; bottom:0; left:0; right:0;
+  background:linear-gradient(transparent, rgba(0,5,15,0.85));
+  padding:12px 8px 6px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.55rem; color:rgba(0,212,255,0.7);
+  letter-spacing:0.15em; text-align:center;
+  text-transform:uppercase;
+}
+
+/* ── PLACEHOLDER (when image not loaded) ── */
+.cert-placeholder {
+  width:100%; height:100%;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:8px;
+  background:linear-gradient(135deg,rgba(0,20,40,0.8),rgba(0,10,24,0.9));
+}
+.cert-placeholder svg {
+  width:32px; height:32px;
+  stroke:rgba(0,212,255,0.35); fill:none; stroke-width:1.2;
+}
+.cert-placeholder span {
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.55rem; color:rgba(0,212,255,0.3);
+  letter-spacing:0.15em; text-transform:uppercase;
+}
+
+/* ── LIGHTBOX ── */
+#lightbox {
+  position:fixed; inset:0; z-index:99999;
+  background:rgba(0,5,15,0.96);
+  display:none; align-items:center; justify-content:center;
+  padding:16px;
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  animation:lbFadeIn .25s ease;
+}
+#lightbox.open { display:flex; }
+@keyframes lbFadeIn{ from{opacity:0} to{opacity:1} }
+
+.lb-inner {
+  position:relative;
+  max-width:90vw; max-height:90vh;
+  display:flex; align-items:center; justify-content:center;
+}
+#lbImg {
+  max-width:90vw; max-height:85vh;
+  object-fit:contain; display:block;
+  border:1px solid rgba(0,212,255,0.3);
+  box-shadow:0 0 60px rgba(0,212,255,0.15);
+  border-radius:2px;
+}
+.lb-close {
+  position:fixed; top:20px; right:20px;
+  width:44px; height:44px; border-radius:50%;
+  background:rgba(0,15,30,0.9);
+  border:1.5px solid rgba(0,212,255,0.4);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:box-shadow .3s, border-color .3s;
+  z-index:100000;
+}
+.lb-close:hover {
+  box-shadow:0 0 20px rgba(0,212,255,0.4);
+  border-color:var(--blue-glow);
+}
+.lb-close svg { width:18px; height:18px; stroke:var(--blue-glow); fill:none; stroke-width:2.5; }
+
+/* Nav arrows */
+.lb-prev, .lb-next {
+  position:fixed; top:50%; transform:translateY(-50%);
+  width:44px; height:44px; border-radius:50%;
+  background:rgba(0,15,30,0.9);
+  border:1.5px solid rgba(0,212,255,0.3);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:box-shadow .3s, border-color .3s;
+  z-index:100000;
+}
+.lb-prev { left:14px; }
+.lb-next { right:14px; }
+.lb-prev:hover,.lb-next:hover {
+  box-shadow:0 0 16px rgba(0,212,255,0.35);
+  border-color:var(--blue-glow);
+}
+.lb-prev svg,.lb-next svg { width:18px; height:18px; stroke:var(--blue-glow); fill:none; stroke-width:2.5; }
+
+/* Lightbox caption */
+.lb-caption {
+  position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.62rem; color:rgba(0,212,255,0.65);
+  letter-spacing:0.2em; text-transform:uppercase;
+  background:rgba(0,10,24,0.8);
+  padding:6px 18px; border:1px solid rgba(0,212,255,0.15);
+  white-space:nowrap; z-index:100000;
+}
+
+/* Touch swipe hint */
+.lb-hint {
+  position:fixed; bottom:52px; left:50%; transform:translateX(-50%);
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.5rem; color:rgba(0,212,255,0.3);
+  letter-spacing:0.2em; text-transform:uppercase;
+  z-index:100000; white-space:nowrap;
+}
+@media(min-width:700px){ .lb-hint{ display:none; } }
+
+</style>
+</head>
+<body id="top">
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="hud-corner hud-tl"></div><div class="hud-corner hud-tr"></div>
+<div class="hud-corner hud-bl"></div><div class="hud-corner hud-br"></div>
+<div class="techy-bg"><div class="scanline"></div><div class="scanline"></div><div class="scanline"></div></div>
+
+<div id="loader" style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+  <canvas id="loaderCanvas" width="260" height="260" style="display:block;margin:0 auto;"></canvas>
+  <div class="loader-label">Loading Achievements</div>
+  <div class="loader-pct" id="loaderPct">0%</div>
+</div>
+
+<header>
+  <a href="index.html" class="logo-mark">
+    <img src="logo.png" alt="Spark Shums" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(0,212,255,0.5);box-shadow:0 0 12px rgba(0,212,255,0.4);">
+  </a>
+  <nav class="nav-desktop">
+    <a href="index.html">Home</a><a href="about.html">About</a>
+    <a href="ceo.html">CEO</a><a href="works.html">Works</a>
+    <a href="achievements.html" class="active">Achievements</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+<nav class="nav-mobile">
+  <a href="index.html">Home</a><a href="about.html">About</a>
+  <a href="ceo.html">CEO</a><a href="works.html">Works</a>
+  <a href="achievements.html" class="active">Achievements</a>
+  <a href="contact.html">Contact</a>
+</nav>
+
+<div class="page-wrapper">
+
+  <!-- ══ HERO ══ -->
+  <section class="ach-hero">
+    <div class="ach-logo fade-up">
+      <img src="logo.png" alt="Spark Shums">
+    </div>
+    <h1 class="ach-heading fade-up" style="transition-delay:.1s">Achieve<span>ments</span></h1>
+    <p class="ach-sub fade-up" style="transition-delay:.2s">// 27 Certificates · 6 Categories</p>
+  </section>
+
+  <div class="sec-div"></div>
+
+  <!-- ══════════════════════════════════════
+       1. CERTIFIED ETHICAL HACKER (1 cert)
+  ══════════════════════════════════════ -->
+  <div class="ach-wrap" style="padding-top:60px;">
+    <div class="cat-heading-row fade-up">
+      <h2>Certified <span>Ethical Hacker</span></h2>
+      <span class="cat-count">// Acmegrade · 1 Certificate</span>
+    </div>
+    <div class="cert-grid" id="grid-eh">
+      <div class="cert-card fade-up" data-cat="eh" data-index="0" data-label="Ethical Hacking · Acmegrade" onclick="openLightbox(this)">
+        <img src="eh1.jpg" alt="Ethical Hacking Certificate" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">CEH · 01</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-div"></div>
+
+  <!-- ══════════════════════════════════════
+       2. AMITY UNIVERSITY (6 certs)
+  ══════════════════════════════════════ -->
+  <div class="ach-wrap">
+    <div class="cat-heading-row fade-up">
+      <h2>Amity <span>University</span></h2>
+      <span class="cat-count">// 6 Certificates</span>
+    </div>
+    <div class="cert-grid" id="grid-amity">
+      <!-- 6 am1.jpg to amity/6.jpg -->
+      <div class="cert-card fade-up" data-cat="amity" data-index="0" data-label="Amity University · Certificate 01" onclick="openLightbox(this)" style="transition-delay:.04s">
+        <img src="am1.jpg" alt="Amity Certificate 1" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">AMU · 01</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="amity" data-index="1" data-label="Amity University · Certificate 02" onclick="openLightbox(this)" style="transition-delay:.07s">
+        <img src="am2.jpg" alt="Amity Certificate 2" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">AMU · 02</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="amity" data-index="2" data-label="Amity University · Certificate 03" onclick="openLightbox(this)" style="transition-delay:.10s">
+        <img src="am3.jpg" alt="Amity Certificate 3" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">AMU · 03</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="amity" data-index="3" data-label="Amity University · Certificate 04" onclick="openLightbox(this)" style="transition-delay:.13s">
+        <img src="am4.jpg" alt="Amity Certificate 4" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">AMU · 04</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="amity" data-index="4" data-label="Amity University · Certificate 05" onclick="openLightbox(this)" style="transition-delay:.16s">
+        <img src="am5.jpg" alt="Amity Certificate 5" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">AMU · 05</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="amity" data-index="5" data-label="Amity University · Certificate 06" onclick="openLightbox(this)" style="transition-delay:.19s">
+        <img src="am6.jpg" alt="Amity Certificate 6" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">AMU · 06</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-div"></div>
+
+  <!-- ══════════════════════════════════════
+       3. SKILL ACADEMIA (9 certs)
+  ══════════════════════════════════════ -->
+  <div class="ach-wrap">
+    <div class="cat-heading-row fade-up">
+      <h2>Skill <span>Academia</span></h2>
+      <span class="cat-count">// 9 Certificates</span>
+    </div>
+    <div class="cert-grid" id="grid-skill">
+      <!-- 9 skill1.png to skill/9.jpeg -->
+      <div class="cert-card fade-up" data-cat="skill" data-index="0" data-label="Skill Academia · Certificate 01" onclick="openLightbox(this)" style="transition-delay:.03s">
+        <img src="skill1.png" alt="Skill Academia 1" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">SKA · 01</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="skill" data-index="1" data-label="Skill Academia · Certificate 02" onclick="openLightbox(this)" style="transition-delay:.06s">
+        <img src="skill2.png" alt="Skill Academia 2" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">SKA · 02</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="skill" data-index="2" data-label="Skill Academia · Certificate 03" onclick="openLightbox(this)" style="transition-delay:.09s">
+        <img src="skill3.png" alt="Skill Academia 3" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">SKA · 03</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="skill" data-index="3" data-label="Skill Academia · Certificate 04" onclick="openLightbox(this)" style="transition-delay:.12s">
+        <img src="skill4.png" alt="Skill Academia 4" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">SKA · 04</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="skill" data-index="4" data-label="Skill Academia · Certificate 05" onclick="openLightbox(this)" style="transition-delay:.15s">
+        <img src="skill5.png" alt="Skill Academia 5" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">SKA · 05</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="skill" data-index="5" data-label="Skill Academia · Certificate 06" onclick="openLightbox(this)" style="transition-delay:.18s">
+        <img src="skill6.png" alt="Skill Academia 6" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">SKA · 06</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="skill" data-index="6" data-label="Skill Academia · Certificate 07" onclick="openLightbox(this)" style="transition-delay:.21s">
+        <img src="skill7.png" alt="Skill Academia 7" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">SKA · 07</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="skill" data-index="7" data-label="Skill Academia · Certificate 08" onclick="openLightbox(this)" style="transition-delay:.24s">
+        <img src="skill8.png" alt="Skill Academia 8" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">SKA · 08</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="skill" data-index="8" data-label="Skill Academia · Certificate 09" onclick="openLightbox(this)" style="transition-delay:.27s">
+        <img src="skill9.png" alt="Skill Academia 9" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">SKA · 09</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-div"></div>
+
+  <!-- ══════════════════════════════════════
+       4. LMIIT (4 certs)
+  ══════════════════════════════════════ -->
+  <div class="ach-wrap">
+    <div class="cat-heading-row fade-up">
+      <h2><span>LMIIT</span></h2>
+      <span class="cat-count">// 4 Certificates</span>
+    </div>
+    <div class="cert-grid" id="grid-lmiit">
+      <div class="cert-card fade-up" data-cat="lmiit" data-index="0" data-label="LMIIT · Certificate 01" onclick="openLightbox(this)" style="transition-delay:.04s">
+        <img src="lmiit1.jpg" alt="LMIIT Certificate 1" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">LMT · 01</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="lmiit" data-index="1" data-label="LMIIT · Certificate 02" onclick="openLightbox(this)" style="transition-delay:.08s">
+        <img src="lmiit2.jpg" alt="LMIIT Certificate 2" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">LMT · 02</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="lmiit" data-index="2" data-label="LMIIT · Certificate 03" onclick="openLightbox(this)" style="transition-delay:.12s">
+        <img src="lmiit3.jpg" alt="LMIIT Certificate 3" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">LMT · 03</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="lmiit" data-index="3" data-label="LMIIT · Certificate 04" onclick="openLightbox(this)" style="transition-delay:.16s">
+        <img src="lmiit4.jpeg" alt="LMIIT Certificate 4" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">LMT · 04</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-div"></div>
+
+  <!-- ══════════════════════════════════════
+       5. PARTICIPATION CERTIFICATES (6 certs)
+  ══════════════════════════════════════ -->
+  <div class="ach-wrap">
+    <div class="cat-heading-row fade-up">
+      <h2>Participation <span>Certificates</span></h2>
+      <span class="cat-count">// 6 Certificates</span>
+    </div>
+    <div class="cert-grid" id="grid-participation">
+      <div class="cert-card fade-up" data-cat="participation" data-index="0" data-label="Participation Certificate 01" onclick="openLightbox(this)" style="transition-delay:.04s">
+        <img src="participation1.jpg" alt="Participation Certificate 1" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">PAR · 01</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="participation" data-index="1" data-label="Participation Certificate 02" onclick="openLightbox(this)" style="transition-delay:.08s">
+        <img src="participation2.jpg" alt="Participation Certificate 2" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">PAR · 02</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="participation" data-index="2" data-label="Participation Certificate 03" onclick="openLightbox(this)" style="transition-delay:.12s">
+        <img src="participation3.jpg" alt="Participation Certificate 3" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">PAR · 03</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="participation" data-index="3" data-label="Participation Certificate 04" onclick="openLightbox(this)" style="transition-delay:.16s">
+        <img src="participation4.jpg" alt="Participation Certificate 4" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">PAR · 04</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="participation" data-index="4" data-label="Participation Certificate 05" onclick="openLightbox(this)" style="transition-delay:.20s">
+        <img src="participation5.jpg" alt="Participation Certificate 5" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">PAR · 05</div>
+      </div>
+      <div class="cert-card fade-up" data-cat="participation" data-index="5" data-label="Participation Certificate 06" onclick="openLightbox(this)" style="transition-delay:.24s">
+        <img src="participation6.jpg" alt="Participation Certificate 6" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">PAR · 06</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-div"></div>
+
+  <!-- ══════════════════════════════════════
+       6. HACKER X (1 cert)
+  ══════════════════════════════════════ -->
+  <div class="ach-wrap" style="padding-bottom:40px;">
+    <div class="cat-heading-row fade-up">
+      <h2>Hacker <span>X</span></h2>
+      <span class="cat-count">// Operating System · 1 Certificate</span>
+    </div>
+    <div class="cert-grid" id="grid-hackerx">
+      <div class="cert-card fade-up" data-cat="hackerx" data-index="0" data-label="Hacker X · Operating System" onclick="openLightbox(this)">
+        <img src="hackerx1.jpg" alt="Hacker X Certificate" onerror="showPlaceholder(this)">
+        <div class="cert-overlay"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="cert-num">HKX · 01</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end page-wrapper -->
+
+<!-- ══ LIGHTBOX ══ -->
+<div id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()" aria-label="Close">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <button class="lb-prev" onclick="lbNav(-1)" aria-label="Previous">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <div class="lb-inner">
+    <img id="lbImg" src="" alt="">
+  </div>
+  <button class="lb-next" onclick="lbNav(1)" aria-label="Next">
+    <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+  <div class="lb-caption" id="lbCaption"></div>
+  <div class="lb-hint">← Swipe to navigate →</div>
+</div>
+
+<footer id="site-footer" style="padding-bottom:90px;">
+  <div class="footer-line"></div>
+  <div class="footer-inner" style="display:flex;align-items:center;justify-content:center;width:100%;padding:0 24px;box-sizing:border-box;">
+    <p class="footer-copy" style="text-align:center;width:100%;">
+      Copyright <span class="copy-sym">&copy;</span> 2018 &nbsp;&mdash;&nbsp; All Rights Reserved by
+      <a href="index.html#top" class="footer-brand">Spark Shums</a>
+    </p>
+  </div>
+</footer>
+
+<button id="smartArrow" aria-label="Scroll">
+  <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+  <span class="arrow-label">Scroll</span>
+</button>
+
+<script src="shared.js"></script>
+<script>
+// ── Lightbox ──
+let currentCards = [];
+let currentIndex = 0;
+let touchStartX = 0;
+
+function openLightbox(card){
+  const cat = card.dataset.cat;
+  currentCards = Array.from(document.querySelectorAll(`.cert-card[data-cat="${cat}"]`));
+  currentIndex = parseInt(card.dataset.index);
+  showLbImage();
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function showLbImage(){
+  const card = currentCards[currentIndex];
+  const img = card.querySelector('img');
+  const lbImg = document.getElementById('lbImg');
+  const cap = document.getElementById('lbCaption');
+  if(img && img.style.display !== 'none'){
+    lbImg.src = img.src;
+    lbImg.alt = img.alt;
+  } else {
+    lbImg.src = '';
+    lbImg.alt = 'Image not available';
+  }
+  cap.textContent = card.dataset.label + ' · ' + (currentIndex+1) + ' / ' + currentCards.length;
+}
+
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function lbNav(dir){
+  currentIndex = (currentIndex + dir + currentCards.length) % currentCards.length;
+  showLbImage();
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e=>{
+  const lb = document.getElementById('lightbox');
+  if(!lb.classList.contains('open')) return;
+  if(e.key === 'ArrowRight' || e.key === 'ArrowDown') lbNav(1);
+  if(e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   lbNav(-1);
+  if(e.key === 'Escape') closeLightbox();
+});
+
+// Click outside image to close
+document.getElementById('lightbox').addEventListener('click', function(e){
+  if(e.target === this) closeLightbox();
+});
+
+// Touch swipe on lightbox
+document.getElementById('lightbox').addEventListener('touchstart', e=>{
+  touchStartX = e.touches[0].clientX;
+},{passive:true});
+document.getElementById('lightbox').addEventListener('touchend', e=>{
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if(Math.abs(diff) > 50) lbNav(diff > 0 ? 1 : -1);
+},{passive:true});
+</script>
+</body>
+</html>
