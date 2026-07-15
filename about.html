@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta name="theme-color" content="#020c1b">
+<title>About — Spark Shums</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=4">
+<style>
+/* ── HERO ── */
+.about-hero {
+  min-height: auto;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 40px 24px 30px;
+  position: relative; z-index: 10;
+}
+@media(min-width:600px){ .about-hero{ padding:50px 40px 30px; } }
+@media(min-width:900px){ .about-hero{ padding:60px 80px 30px; } }
+
+.company-logo-wrap {
+  position: relative; margin-bottom: 36px;
+  display: flex; align-items: center; justify-content: center;
+}
+.company-logo-wrap::before {
+  content:''; position:absolute; width:160px; height:160px; border-radius:50%;
+  border:1px solid rgba(0,212,255,0.2); animation:spinRing 12s linear infinite;
+}
+.company-logo-wrap::after {
+  content:''; position:absolute; width:185px; height:185px; border-radius:50%;
+  border:1px dashed rgba(0,212,255,0.1); animation:spinRing 20s linear infinite reverse;
+}
+@keyframes spinRing{ to{transform:rotate(360deg);} }
+.company-logo {
+  width:120px; height:120px; border-radius:50%;
+  border:2px solid rgba(0,212,255,0.5);
+  box-shadow:0 0 28px rgba(0,212,255,0.28),0 0 55px rgba(0,212,255,0.1);
+  position:relative; z-index:2; overflow:hidden;
+}
+.company-logo img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+.company-name {
+  font-family:'Orbitron',monospace;
+  font-size:clamp(2rem,8vw,3.8rem); font-weight:900;
+  color:var(--white-cold); text-align:center; letter-spacing:0.07em;
+  text-shadow:0 0 40px rgba(0,212,255,0.35); margin-bottom:14px;
+}
+.company-name span { color:var(--blue-glow); }
+.company-est {
+  font-family:'Share Tech Mono',monospace;
+  font-size:clamp(0.82rem,2.5vw,1.05rem);
+  color:rgba(0,212,255,0.92); letter-spacing:0.3em;
+  text-align:center; margin-bottom:24px; display:inline-block;
+  font-weight:700; text-shadow:0 0 10px rgba(0,212,255,0.5);
+}
+.company-est::before,.company-est::after { content:'//'; color:rgba(0,212,255,0.5); margin:0 12px; }
+.company-tagline {
+  font-family:'Rajdhani',sans-serif;
+  font-size:clamp(1rem,3.5vw,1.25rem); font-weight:600;
+  color:rgba(210,238,255,0.88); letter-spacing:0.22em;
+  text-align:center; text-transform:uppercase;
+  padding:18px 30px; position:relative; max-width:600px;
+  text-shadow:0 0 14px rgba(0,212,255,0.25);
+}
+.company-tagline::before,.company-tagline::after {
+  content:''; position:absolute; left:50%; transform:translateX(-50%);
+  width:180px; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,212,255,0.3),transparent);
+}
+.company-tagline::before{ top:0; } .company-tagline::after{ bottom:0; }
+
+/* ── SHARED WRAPPER ── */
+.ab-wrap {
+  width:100%; max-width:1100px; margin:0 auto;
+  padding:40px 24px 20px;
+  position:relative; z-index:10;
+}
+@media(min-width:600px){ .ab-wrap{ padding:45px 40px 20px; } }
+@media(min-width:900px){ .ab-wrap{ padding:55px 80px 20px; } }
+
+/* ── SECTION HEADING ── */
+.ab-h-row {
+  display:flex; align-items:flex-start; gap:14px; margin-bottom:36px;
+}
+.ab-h-row::before {
+  content:''; display:block; width:32px; min-width:32px; height:2px;
+  background:var(--blue-glow); box-shadow:0 0 8px var(--blue-glow);
+  flex-shrink:0; margin-top:11px;
+}
+.ab-h-row::after{ display:none; }
+@media(min-width:600px){
+  .ab-h-row{ align-items:center; }
+  .ab-h-row::after{ display:block; content:''; flex:1; height:1px;
+    background:linear-gradient(90deg,rgba(0,212,255,0.3),transparent); }
+}
+.ab-h-row h2 {
+  font-family:'Orbitron',monospace;
+  font-size:clamp(1rem,3vw,1.6rem); font-weight:900;
+  color:var(--white-cold); letter-spacing:0.07em;
+  white-space:normal; line-height:1.3;
+}
+.ab-h-row h2 span{ color:var(--blue-glow); }
+
+.sec-div {
+  width:100%; height:1px; position:relative; z-index:10;
+  background:linear-gradient(90deg,transparent,rgba(0,212,255,0.2),transparent);
+}
+
+/* ── ABOUT PARA ── */
+.about-box {
+  font-family:'Rajdhani',sans-serif;
+  font-size:clamp(1rem,2.5vw,1.1rem);
+  color:rgba(220,240,255,0.9); line-height:1.85;
+  font-weight:400; letter-spacing:0.02em;
+  padding:24px 26px;
+  border:1px solid rgba(0,212,255,0.14);
+  border-left:3px solid var(--blue-glow);
+  background:rgba(0,15,30,0.4);
+  position:relative;
+}
+.about-box::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,var(--blue-glow),transparent);
+}
+.hl { color:var(--blue-glow); font-weight:600; text-shadow:0 0 10px rgba(0,212,255,0.4); }
+
+/* Stats */
+.ab-stats {
+  display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:28px;
+}
+@media(min-width:500px){ .ab-stats{ grid-template-columns:repeat(4,1fr); } }
+.ab-st {
+  padding:16px 14px; text-align:center;
+  border:1px solid rgba(0,212,255,0.12);
+  border-top:2px solid rgba(0,212,255,0.45);
+  background:rgba(0,20,40,0.35);
+}
+.ab-st strong {
+  display:block; font-family:'Orbitron',monospace;
+  font-size:clamp(1.2rem,3vw,1.6rem); font-weight:900;
+  color:var(--blue-glow); text-shadow:0 0 12px rgba(0,212,255,0.6);
+}
+.ab-st span {
+  font-family:'Share Tech Mono',monospace; font-size:0.58rem;
+  color:rgba(0,212,255,0.55); letter-spacing:0.12em;
+  text-transform:uppercase; margin-top:4px; display:block;
+}
+
+/* ── SERVICES ── */
+.svc-grid {
+  display:grid; grid-template-columns:1fr; gap:16px;
+}
+@media(min-width:500px){ .svc-grid{ grid-template-columns:1fr 1fr; } }
+@media(min-width:900px){ .svc-grid{ grid-template-columns:1fr 1fr 1fr; gap:18px; } }
+
+.svc-card {
+  padding:16px 18px;
+  border:1px solid rgba(0,212,255,0.12);
+  border-left:2px solid rgba(0,212,255,0.4);
+  background:rgba(0,15,30,0.4);
+  display:flex; align-items:flex-start; gap:14px;
+  transition:transform .3s,border-color .3s,background .3s,box-shadow .3s;
+  cursor:default;
+}
+.svc-card:hover {
+  border-left-color:var(--blue-glow);
+  border-color:rgba(0,212,255,0.25);
+  background:rgba(0,25,48,0.55);
+  transform:translateX(4px);
+  box-shadow:-3px 0 14px rgba(0,212,255,0.12);
+}
+.svc-icon {
+  width:36px; height:36px; border-radius:50%;
+  border:1.5px solid rgba(0,212,255,0.35);
+  background:rgba(0,30,55,0.6);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; margin-top:2px; box-shadow:0 0 10px rgba(0,212,255,0.12);
+}
+.svc-icon svg { width:16px; height:16px; stroke:var(--blue-glow); fill:none; stroke-width:1.8; }
+.svc-text-wrap { display:flex; flex-direction:column; gap:2px; flex:1; min-width:0; }
+.svc-name {
+  font-family:'Orbitron',monospace;
+  font-size:clamp(0.72rem,1.8vw,0.85rem); font-weight:700;
+  color:var(--white-cold); letter-spacing:0.05em;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.svc-orig {
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.55rem; color:rgba(0,212,255,0.65);
+  letter-spacing:0.14em; text-transform:uppercase; display:block;
+}
+.svc-desc {
+  font-family:'Rajdhani',sans-serif;
+  font-size:clamp(0.85rem,1.8vw,0.94rem);
+  color:rgba(200,230,255,0.75); line-height:1.6;
+  font-weight:400; margin-top:6px;
+}
+
+/* ── RATINGS ── */
+.rat-grid {
+  display:grid; grid-template-columns:1fr; gap:18px;
+}
+@media(min-width:600px){ .rat-grid{ grid-template-columns:1fr 1fr; } }
+@media(min-width:900px){ .rat-grid{ grid-template-columns:1fr 1fr 1fr; gap:20px; } }
+
+.rat-card {
+  padding:22px 20px;
+  border:1px solid rgba(0,212,255,0.12);
+  background:rgba(0,15,30,0.45);
+  position:relative;
+  transition:transform .3s,box-shadow .3s;
+}
+.rat-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,var(--blue-glow),transparent);
+}
+.rat-card:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(0,212,255,0.09); }
+.rat-top { display:flex; align-items:center; gap:14px; margin-bottom:12px; }
+.rat-av {
+  width:44px; height:44px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Orbitron',monospace; font-size:1rem; font-weight:900;
+  border:1.5px solid rgba(0,212,255,0.4);
+  background:rgba(0,30,55,0.7);
+  color:var(--blue-glow); text-shadow:0 0 8px rgba(0,212,255,0.5);
+}
+.rat-name {
+  font-family:'Orbitron',monospace;
+  font-size:0.72rem; font-weight:700;
+  color:var(--white-cold); letter-spacing:0.05em; margin-bottom:2px;
+}
+.rat-svc {
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.55rem; color:rgba(0,212,255,0.55);
+  letter-spacing:0.14em; text-transform:uppercase;
+}
+.rat-stars { display:flex; gap:3px; margin-bottom:10px; }
+.st { color:#ffc107; font-size:0.88rem; }
+.st.h { opacity:0.45; }
+.rat-txt {
+  font-family:'Rajdhani',sans-serif;
+  font-size:clamp(0.9rem,2vw,0.98rem);
+  color:rgba(205,232,255,0.82); line-height:1.65;
+  font-weight:400; font-style:italic;
+}
+.rat-txt::before{ content:'"'; color:var(--blue-glow); font-size:1.15em; }
+.rat-txt::after { content:'"'; color:var(--blue-glow); font-size:1.15em; }
+
+.data-readout {
+  position:fixed; font-family:'Share Tech Mono',monospace; font-size:0.5rem;
+  color:rgba(0,212,255,0.2); letter-spacing:0.1em; line-height:1.9;
+  pointer-events:none; user-select:none; display:none;
+}
+@media(min-width:900px){
+  .data-readout{ display:block; }
+  .data-readout.left{ left:22px; top:50%; transform:translateY(-50%); }
+  .data-readout.right{ right:22px; top:50%; transform:translateY(-50%); text-align:right; }
+}
+</style>
+</head>
+<body id="top">
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="hud-corner hud-tl"></div><div class="hud-corner hud-tr"></div>
+<div class="hud-corner hud-bl"></div><div class="hud-corner hud-br"></div>
+<div class="techy-bg">
+  <div class="scanline"></div><div class="scanline"></div><div class="scanline"></div>
+</div>
+
+<div id="loader">
+  <canvas id="loaderCanvas" width="260" height="260"></canvas>
+  <div class="loader-label">Loading About</div>
+  <div class="loader-pct" id="loaderPct">0%</div>
+</div>
+
+<header>
+  <a href="index.html" class="logo-mark">
+    <img src="logo.png" alt="Spark Shums" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(0,212,255,0.5);box-shadow:0 0 12px rgba(0,212,255,0.4);">
+  </a>
+  <nav class="nav-desktop">
+    <a href="index.html">Home</a><a href="about.html" class="active">About</a>
+    <a href="ceo.html">CEO</a><a href="works.html">Works</a>
+    <a href="achievements.html">Achievements</a><a href="contact.html">Contact</a>
+  </nav>
+  <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+<nav class="nav-mobile">
+  <a href="index.html">Home</a><a href="about.html" class="active">About</a>
+  <a href="ceo.html">CEO</a><a href="works.html">Works</a>
+  <a href="achievements.html">Achievements</a><a href="contact.html">Contact</a>
+</nav>
+
+<div class="data-readout left">SYS.CORE: ONLINE<br>PWR: 100%<br>SHIELD: ACTIVE<br>CONN: OK<br>LAT: 22.5726°N<br>LNG: 88.3639°E</div>
+<div class="data-readout right">SECTOR: INDUSTRIAL<br>DOMAIN: MULTI<br>INTEGRITY: 100%<br>UPTIME: 7 YRS<br>RANGE: GLOBAL<br>STATUS: ACTIVE</div>
+
+<div class="page-wrapper">
+
+  <!-- ══ HERO ══ -->
+  <section class="about-hero">
+    <div class="hud-divider fade-up"></div>
+    <div class="company-logo-wrap fade-up" style="transition-delay:.1s">
+      <div class="company-logo">
+        <img src="logo.png" alt="Spark Shums">
+      </div>
+    </div>
+    <h1 class="company-name fade-up" style="transition-delay:.2s">Spark <span>Shums</span></h1>
+    <div class="company-est fade-up" style="transition-delay:.3s">Established in 2018</div>
+    <div class="company-tagline fade-up" style="transition-delay:.4s">With 7 Years of Diverse Industrial Experience</div>
+  </section>
+
+  <div class="sec-div"></div>
+
+  <!-- ══ ABOUT COMPANY ══ -->
+  <div class="ab-wrap">
+    <div class="ab-h-row fade-up"><h2>About the <span>Company</span></h2></div>
+
+    <div class="about-box fade-up" style="transition-delay:.1s">
+      <span class="hl">Spark Shums</span> was established in <span class="hl">2018</span> with a single vision — to create a platform where technology meets education, creativity meets business, and every individual gets the tools they need to grow. Our motto is simple: <span class="hl">You need a Spark to become a Fire and make this world unstoppable.</span>
+      <br><br>
+      Over <span class="hl">7 years of diverse industrial experience</span>, we have served students, entrepreneurs, freelancers, and businesses across multiple sectors. From teaching programming to building websites, from designing brands to securing digital assets — we deliver <span class="hl">end-to-end digital and educational solutions</span> under one roof.
+      <br><br>
+      Our <span class="hl">client-first approach</span>, transparent communication, and passion for innovation have earned us trust across 5+ industries. Every project we take on is treated as our own — with dedication, precision, and results that exceed expectations. At Spark Shums, <span class="hl">your growth is our mission.</span>
+    </div>
+
+    <div class="ab-stats fade-up" style="transition-delay:.15s">
+      <div class="ab-st"><strong>2018</strong><span>Established</span></div>
+      <div class="ab-st"><strong>7+</strong><span>Years Active</span></div>
+      <div class="ab-st"><strong>5+</strong><span>Industries</span></div>
+      <div class="ab-st"><strong>17+</strong><span>Services</span></div>
+    </div>
+  </div>
+
+  <div class="sec-div" style="margin-top:60px;"></div>
+
+  <!-- ══ SERVICES ══ -->
+  <div class="ab-wrap">
+    <div class="ab-h-row fade-up"><h2>Our <span>Services</span></h2></div>
+    <div class="svc-grid">
+
+      <div class="svc-card fade-up" style="transition-delay:.04s">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <div class="svc-text-wrap"><div class="svc-name">01. Code Craft</div><span class="svc-orig">Programming</span><p class="svc-desc">From school syllabus (C, C++, Java, Python) to advanced programming — we build coders from the ground up.</p></div>
+      </div>
+
+      <div class="svc-card fade-up" style="transition-delay:.07s">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+        <div class="svc-text-wrap"><div class="svc-name">02. Freelance Mastery</div><span class="svc-orig">Freelancing</span><p class="svc-desc">Find clients, deliver projects, build a personal brand, and earn globally — from web dev to graphic design and beyond.</p></div>
+      </div>
+
+      <div class="svc-card fade-up" style="transition-delay:.10s">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+        <div class="svc-text-wrap"><div class="svc-name">03. Visual Design Studio</div><span class="svc-orig">Graphic Designing</span><p class="svc-desc">Logos, brand identities, social media creatives, and print — designs that speak before words do.</p></div>
+      </div>
+
+      <div class="svc-card fade-up" style="transition-delay:.13s">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="svc-text-wrap"><div class="svc-name">04. CyberShield</div><span class="svc-orig">Cyber Security / Ethical Hacking</span><p class="svc-desc">Learn ethical hacking, understand digital threats, and secure your online presence with real industry skills.</p></div>
+      </div>
+
+      <div class="svc-card fade-up" style="transition-delay:.16s">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <div class="svc-text-wrap"><div class="svc-name">05. Digital Foundations</div><span class="svc-orig">Basic Computer</span><p class="svc-desc">Start from zero — MS Office, internet basics, emails, typing, and digital literacy for all ages.</p></div>
+      </div>
+
+      <div class="svc-card fade-up" style="transition-delay:.19s">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="svc-text-wrap"><div class="svc-name">06. EduConnect</div><span class="svc-orig">Teaching Consultancy</span><p class="svc-desc">Qualified home tutors for all grades, career counselling, and academic planning for students and parents.</p></div>
+      </div>
+
+      <div class="svc-card fade-up" style="transition-delay:.22s">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+        <div class="svc-text-wrap"><div class="svc-name">07. Excel Power</div><span class="svc-orig">Advanced Excel</span><p class="svc-desc">Master VLOOKUP, HLOOKUP, Pivot Tables, and macros — essential skills for any professional career.</p></div>
+      </div>
+
+      <div class="svc-card fade-up" style="transition-delay:.25s">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div class="svc-text-wrap"><div class="svc-name">08. Lead &amp; Build</div><span class="svc-orig">Leadership Management</span><p class="svc-desc">Learn to lead teams, manage people, build a business culture, and think like a successful entrepreneur.</p></div>
+      </div>
+
+      <div class="svc-card fade-up" style="transition-delay:.28s">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <div class="svc-text-wrap"><div class="svc-name">09. Strategic Thinking</div><span class="svc-orig">Problem Solving</span><p class="svc-desc">Develop analytical thinking, logical reasoning, and creative problem-solving for real-world challenges.</p></div>
+      </div>
+
+      <div class="svc-card fade-up" style="transition-delay:.31s">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <div class="svc-text-wrap"><div class="svc-name">10. Digital Growth</div><span class="svc-orig">Digital Marketing</span><p class="svc-desc">SEO, Google Ads, email marketing, and online presence building — grow your brand digitally.</p></div>
+      </div>
+
+      <div class="svc-card fade-up" style="transition-delay:.34s">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></div>
+        <div class="svc-text-wrap"><div class="svc-name">11. Social Pulse</div><span class="svc-orig">Social Media Marketing</span><p class="svc-desc">Build and monetise your social presence across Instagram, Facebook, YouTube, and more with proven strategies.</p></div>
+      </div>
+
+      <div class="svc-card fade-up" style="transition-delay:.37s">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg></div>
+        <div class="svc-text-wrap"><div class="svc-name">12. Web Design</div><span class="svc-orig">Website Designing</span><p class="svc-desc">Beautiful, fast, mobile-responsive website designs that captivate visitors and reflect your brand.</p></div>
+      </div>
+
+      <div class="svc-card fade-up" style="transition-delay:.40s">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="12" y1="2" x2="12" y2="22"/></svg></div>
+        <div class="svc-text-wrap"><div class="svc-name">13. Web Development</div><span class="svc-orig">Website Development</span><p class="svc-desc">Full-stack web solutions — from landing pages to complex web apps — built for performance and scale.</p></div>
+      </div>
+
+      <div class="svc-card fade-up" style="transition-delay:.43s">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 8h10M7 12h6"/></svg></div>
+        <div class="svc-text-wrap"><div class="svc-name">14. UI/UX Design</div><span class="svc-orig">UI/UX Designing</span><p class="svc-desc">User-first design — wireframing, prototyping, and interface design that makes digital products intuitive.</p></div>
+      </div>
+
+      <div class="svc-card fade-up" style="transition-delay:.46s">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+        <div class="svc-text-wrap"><div class="svc-name">15. Content Studio</div><span class="svc-orig">Content Writing</span><p class="svc-desc">SEO articles, website copy, social captions, product descriptions — words that connect and convert.</p></div>
+      </div>
+
+      <div class="svc-card fade-up" style="transition-delay:.49s">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+        <div class="svc-text-wrap"><div class="svc-name">16. AI in Daily Life</div><span class="svc-orig">Artificial Intelligence Usage</span><p class="svc-desc">Use AI tools smartly for productivity, writing, research, design, and everyday business automation.</p></div>
+      </div>
+
+      <div class="svc-card fade-up" style="transition-delay:.52s">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
+        <div class="svc-text-wrap"><div class="svc-name">17. Creator Lab</div><span class="svc-orig">Content Creation</span><p class="svc-desc">Videos, reels, thumbnails, scripts, and posts — everything to build a powerful creator presence.</p></div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="sec-div" style="margin-top:60px;"></div>
+
+  <!-- ══ RATINGS ══ -->
+  <div class="ab-wrap" style="padding-bottom:60px;">
+    <div class="ab-h-row fade-up"><h2>What Our <span>Clients Say</span></h2></div>
+    <div class="rat-grid">
+
+      <!-- Male 1 -->
+      <div class="rat-card fade-up" style="transition-delay:.05s">
+        <div class="rat-top">
+          <div class="rat-av">A</div>
+          <div><div class="rat-name">Arjun Mehta</div><div class="rat-svc">Web Development</div></div>
+        </div>
+        <div class="rat-stars"><span class="st">★</span><span class="st">★</span><span class="st">★</span><span class="st">★</span><span class="st">★</span></div>
+        <p class="rat-txt">Built our company website in 2 weeks. Clean design, fast performance, and excellent communication. Highly recommended!</p>
+      </div>
+
+      <!-- Female 1 -->
+      <div class="rat-card fade-up" style="transition-delay:.10s">
+        <div class="rat-top">
+          <div class="rat-av">P</div>
+          <div><div class="rat-name">Priya Sharma</div><div class="rat-svc">Social Media Marketing</div></div>
+        </div>
+        <div class="rat-stars"><span class="st">★</span><span class="st">★</span><span class="st">★</span><span class="st">★</span><span class="st">★</span></div>
+        <p class="rat-txt">Our Instagram followers tripled in 3 months. Social Pulse strategy was effective, consistent, and results-driven.</p>
+      </div>
+
+      <!-- Male 2 -->
+      <div class="rat-card fade-up" style="transition-delay:.15s">
+        <div class="rat-top">
+          <div class="rat-av">R</div>
+          <div><div class="rat-name">Rohit Banerjee</div><div class="rat-svc">Code Craft · Programming</div></div>
+        </div>
+        <div class="rat-stars"><span class="st">★</span><span class="st">★</span><span class="st">★</span><span class="st">★</span><span class="st">★</span></div>
+        <p class="rat-txt">Learned Python from scratch here. Teaching is simple, patient, and incredibly practical. Best decision I made this year.</p>
+      </div>
+
+      <!-- Female 2 -->
+      <div class="rat-card fade-up" style="transition-delay:.20s">
+        <div class="rat-top">
+          <div class="rat-av">S</div>
+          <div><div class="rat-name">Sneha Kapoor</div><div class="rat-svc">UI/UX Design</div></div>
+        </div>
+        <div class="rat-stars"><span class="st">★</span><span class="st">★</span><span class="st">★</span><span class="st">★</span><span class="st">★</span></div>
+        <p class="rat-txt">App interface was redesigned beautifully. User engagement increased noticeably. They truly understand design thinking.</p>
+      </div>
+
+      <!-- Male 3 -->
+      <div class="rat-card fade-up" style="transition-delay:.25s">
+        <div class="rat-top">
+          <div class="rat-av">K</div>
+          <div><div class="rat-name">Kunal Das</div><div class="rat-svc">CyberShield · Security</div></div>
+        </div>
+        <div class="rat-stars"><span class="st">★</span><span class="st">★</span><span class="st">★</span><span class="st">★</span><span class="st h">★</span></div>
+        <p class="rat-txt">Ethical hacking basics explained practically and clearly. Eye-opening course that changed how I think about digital safety.</p>
+      </div>
+
+      <!-- Female 3 -->
+      <div class="rat-card fade-up" style="transition-delay:.30s">
+        <div class="rat-top">
+          <div class="rat-av">N</div>
+          <div><div class="rat-name">Nisha Verma</div><div class="rat-svc">EduConnect · Tutoring</div></div>
+        </div>
+        <div class="rat-stars"><span class="st">★</span><span class="st">★</span><span class="st">★</span><span class="st">★</span><span class="st">★</span></div>
+        <p class="rat-txt">My daughter's grades improved after joining EduConnect. Tutor was patient, qualified, and truly dedicated. Absolutely satisfied!</p>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- end page-wrapper -->
+
+<footer id="site-footer" style="padding-bottom:90px;">
+  <div class="footer-line"></div>
+  <div class="footer-inner" style="display:flex;align-items:center;justify-content:center;width:100%;padding:0 24px;box-sizing:border-box;">
+    <p class="footer-copy" style="text-align:center;width:100%;">
+      Copyright <span class="copy-sym">&copy;</span> 2018 &nbsp;&mdash;&nbsp; All Rights Reserved by
+      <a href="index.html#top" class="footer-brand">Spark Shums</a>
+    </p>
+  </div>
+</footer>
+
+
+<button id="smartArrow" aria-label="Scroll">
+  <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+  <span class="arrow-label">Scroll</span>
+</button>
+<script src="shared.js"></script>
+</body>
+</html>

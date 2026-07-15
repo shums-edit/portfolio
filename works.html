@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#020c1b">
+<title>Works — Spark Shums</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=4">
+<style>
+/* ===== WORKS PAGE SPECIFIC ===== */
+
+/* Hero */
+.works-hero {
+  padding: 50px 24px 20px;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+@media(min-width:600px){ .works-hero{ padding:65px 40px 25px; } }
+
+.works-eyebrow {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--blue-glow);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  opacity: 0.8;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.works-eyebrow::before,
+.works-eyebrow::after {
+  content: '';
+  width: 30px; height: 1px;
+  background: var(--blue-glow);
+  box-shadow: 0 0 6px var(--blue-glow);
+}
+
+.works-title {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: clamp(2rem, 8vw, 3.6rem);
+  color: var(--white-cold);
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 40px rgba(0,212,255,0.25);
+}
+.works-title span { color: var(--blue-glow); text-shadow: var(--text-glow); }
+
+.works-sub {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+  color: rgba(220,240,255,0.72);
+  letter-spacing: 0.03em;
+  margin-top: 14px;
+}
+
+/* Section wrap */
+.wk-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+  position: relative;
+  z-index: 10;
+}
+@media(min-width:600px){ .wk-wrap{ padding:50px 40px 70px; } }
+@media(min-width:900px){ .wk-wrap{ padding:55px 80px 80px; } }
+
+/* Subheading row */
+.wk-h-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+.wk-h-row::before {
+  content: '';
+  width: 32px; height: 2px;
+  background: var(--blue-glow);
+  box-shadow: 0 0 8px var(--blue-glow);
+  flex-shrink: 0;
+}
+.wk-h-row::after {
+  content: '';
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, rgba(0,212,255,0.3), transparent);
+  display: none;
+}
+@media(min-width:600px){ .wk-h-row::after{ display:block; } }
+.wk-h-row h2 {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  color: var(--white-cold);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.wk-h-row h2 span { color: var(--blue-glow); }
+
+.wk-note {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: rgba(210,235,255,0.68);
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+  margin-top: -22px;
+  margin-bottom: 34px;
+  max-width: 640px;
+}
+.wk-note a {
+  color: var(--blue-glow);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(0,212,255,0.35);
+  transition: border-color 0.3s ease, text-shadow 0.3s ease;
+}
+.wk-note a:hover {
+  border-color: var(--blue-glow);
+  text-shadow: 0 0 10px rgba(0,212,255,0.6);
+}
+
+/* Card grid — ready to hold more cards as they're added */
+.wk-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+@media(min-width:640px){ .wk-grid{ grid-template-columns:repeat(2,1fr); } }
+@media(min-width:1000px){ .wk-grid{ grid-template-columns:repeat(3,1fr); gap:30px; } }
+
+/* Project card — vertical rectangle */
+.wk-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(0,212,255,0.14);
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(0,15,30,0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  position: relative;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.wk-card::before {
+  content: '';
+  position: absolute; top:0; left:0; right:0; height:2px;
+  background: linear-gradient(90deg, transparent, var(--blue-glow), transparent);
+  opacity: 0.7;
+  z-index: 2;
+}
+.wk-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(0,212,255,0.35);
+  box-shadow: 0 14px 40px rgba(0,212,255,0.12);
+}
+
+.wk-card-img-wrap {
+  width: 100%;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(0,212,255,0.14);
+  background: rgba(0,10,20,0.6);
+}
+.wk-card-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.wk-card:hover .wk-card-img-wrap img { transform: scale(1.05); }
+
+/* Foundational Project cards — has image, but no link/button */
+.wk-card--plain .wk-card-points { margin-bottom: 0; }
+
+/* Slow neon heartbeat loop on the card itself (since there's no button to carry the glow) */
+.wk-card--plain {
+  animation: cardHeartbeat 2.6s ease-in-out infinite;
+}
+.wk-card--plain:hover {
+  animation-play-state: paused;
+}
+@keyframes cardHeartbeat {
+  0%   { border-color: rgba(0,212,255,0.14); box-shadow: 0 0 0 rgba(0,212,255,0); }
+  50%  { border-color: var(--blue-glow); box-shadow: 0 0 26px rgba(0,212,255,0.35), 0 0 8px rgba(0,212,255,0.5); }
+  100% { border-color: rgba(0,212,255,0.14); box-shadow: 0 0 0 rgba(0,212,255,0); }
+}
+
+.wk-card-body {
+  padding: 22px 22px 26px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.wk-card-name {
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  font-size: clamp(0.95rem, 2vw, 1.08rem);
+  color: var(--white-cold);
+  letter-spacing: 0.03em;
+  line-height: 1.4;
+  margin-bottom: 16px;
+  text-shadow: 0 0 14px rgba(0,212,255,0.15);
+}
+
+.wk-card-points {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 24px;
+  flex: 1;
+}
+.wk-card-points li {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.87rem;
+  font-weight: 500;
+  color: rgba(210,235,255,0.82);
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+.wk-card-points li::before {
+  content: '▹';
+  color: var(--blue-glow);
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  margin-top: 1px;
+  text-shadow: 0 0 8px rgba(0,212,255,0.6);
+}
+
+.wk-show-more {
+  margin-top: auto;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--blue-glow);
+  text-decoration: none;
+  border: 1px solid rgba(0,212,255,0.4);
+  padding: 10px 20px;
+  border-radius: 4px;
+  transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, gap 0.3s ease;
+  animation: showMoreHeartbeat 2.6s ease-in-out infinite;
+}
+.wk-show-more svg {
+  width: 13px; height: 13px;
+  stroke: var(--blue-glow);
+  transition: transform 0.3s ease;
+}
+.wk-show-more:hover {
+  background: rgba(0,212,255,0.08);
+  border-color: var(--blue-glow);
+  gap: 12px;
+  animation-play-state: paused;
+  box-shadow: 0 0 22px rgba(0,212,255,0.45), 0 0 6px rgba(0,212,255,0.6);
+}
+.wk-show-more:hover svg { transform: translateX(3px); }
+
+/* Slow neon heartbeat loop — glow, fade, glow, fade */
+@keyframes showMoreHeartbeat {
+  0%   { border-color: rgba(0,212,255,0.4); box-shadow: 0 0 0 rgba(0,212,255,0); }
+  50%  { border-color: var(--blue-glow); box-shadow: 0 0 18px rgba(0,212,255,0.55), 0 0 4px rgba(0,212,255,0.7); }
+  100% { border-color: rgba(0,212,255,0.4); box-shadow: 0 0 0 rgba(0,212,255,0); }
+}
+</style>
+</head>
+<body id="top">
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="hud-corner hud-tl"></div>
+<div class="hud-corner hud-tr"></div>
+<div class="hud-corner hud-bl"></div>
+<div class="hud-corner hud-br"></div>
+<div class="techy-bg">
+  <div class="scanline"></div><div class="scanline"></div><div class="scanline"></div>
+</div>
+
+<div id="loader">
+  <canvas id="loaderCanvas" width="260" height="260"></canvas>
+  <div class="loader-label">Loading Works</div>
+  <div class="loader-pct" id="loaderPct">0%</div>
+</div>
+
+<header>
+  <a href="index.html" class="logo-mark">
+    <img src="logo.png" alt="Spark Shums" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(0,212,255,0.5);box-shadow:0 0 12px rgba(0,212,255,0.4);">
+  </a>
+  <nav class="nav-desktop">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="ceo.html">CEO</a>
+    <a href="works.html">Works</a>
+    <a href="achievements.html">Achievements</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <button class="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<nav class="nav-mobile">
+  <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="ceo.html">CEO</a>
+    <a href="works.html">Works</a>
+    <a href="achievements.html">Achievements</a>
+    <a href="contact.html">Contact</a>
+</nav>
+
+<div class="page-wrapper">
+
+  <!-- ===== WORKS HERO ===== -->
+  <section class="works-hero">
+    <div class="works-eyebrow fade-up">Project Arena</div>
+    <h1 class="works-title fade-up" style="transition-delay:0.1s">OUR <span>WORKS</span></h1>
+    <p class="works-sub fade-up" style="transition-delay:0.2s">Research, builds, and the foundations behind them</p>
+  </section>
+
+  <!-- ===== RESEARCH WORK ===== -->
+  <section class="wk-wrap">
+    <div class="wk-h-row fade-up">
+      <h2>Research <span>Work</span></h2>
+    </div>
+
+    <div class="wk-grid">
+
+      <!-- Card: Geo-distributed cloud data redundancy and failover system -->
+      <div class="wk-card fade-up" style="transition-delay:0.1s">
+        <div class="wk-card-img-wrap">
+          <img src="majorproject.jpeg" alt="Geo-distributed cloud data redundancy and failover system">
+        </div>
+        <div class="wk-card-body">
+          <h3 class="wk-card-name">Geo-distributed cloud data redundancy and failover system</h3>
+          <ul class="wk-card-points">
+            <li>AI two-level scanning detects hidden malicious data</li>
+            <li>Auto data wipe leaves hacker empty-handed</li>
+            <li>Intelligent priority-based automatic node failover</li>
+            <li>Inter-node firewalls block lateral hacker movement</li>
+            <li>Zero downtime geo-redundant multi-server architecture</li>
+            <li>Load balancer scales AI security layer</li>
+            <li>Delta sync restores recovered server automatically</li>
+            <li>Six-layer firewall per server node protection</li>
+            <li>Vendor-neutral multi-node eliminates single dependency</li>
+            <li>Slow node triggers failover without data loss</li>
+            <li>Simultaneous multicast replication to all healthy servers</li>
+            <li>System self-heals without any manual intervention</li>
+            <li>Pre-replication inspection prevents cluster-wide data poisoning</li>
+          </ul>
+          <a href="https://shums-edit.github.io/Secure-Multi-Node-Geo-Redundant-Cloud-Storage-with-AI-Powered-Failover/" target="_blank" rel="noopener" class="wk-show-more">
+            Show More
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== MAJOR PROJECT ===== -->
+  <section class="wk-wrap">
+    <div class="wk-h-row fade-up">
+      <h2>Major <span>Project</span></h2>
+    </div>
+
+    <div class="wk-grid">
+
+      <!-- Card 1: Student Enquiry Form -->
+      <div class="wk-card fade-up" style="transition-delay:0.05s">
+        <div class="wk-card-img-wrap">
+          <img src="enquiryform.jpeg" alt="Student Enquiry Form">
+        </div>
+        <div class="wk-card-body">
+          <h3 class="wk-card-name">Student Enquiry Form</h3>
+          <ul class="wk-card-points">
+            <li>Real-time enquiry sync via Firebase</li>
+            <li>Instant WhatsApp alert on submit</li>
+            <li>Password-protected admin dashboard access</li>
+            <li>One-click Excel export feature</li>
+            <li>Fully responsive glass morphism UI design</li>
+          </ul>
+          <a href="https://shums-edit.github.io/alpha_academy_query_form_portfolio/" target="_blank" rel="noopener" class="wk-show-more">
+            Show More
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 2: Online Student Form -->
+      <div class="wk-card fade-up" style="transition-delay:0.1s">
+        <div class="wk-card-img-wrap">
+          <img src="onlineform.jpeg" alt="Online Student Form">
+        </div>
+        <div class="wk-card-body">
+          <h3 class="wk-card-name">Online Student Form</h3>
+          <ul class="wk-card-points">
+            <li>Auto-generates official PDF admission forms</li>
+            <li>Firebase Auth secured admin login system</li>
+            <li>Recycle bin with 30-day auto-expiry</li>
+            <li>Unique student ID auto-generation logic</li>
+            <li>Bulk CSV import/export for records</li>
+          </ul>
+          <a href="https://shums-edit.github.io/alpha_academy_online_admission_form_portfolio/" target="_blank" rel="noopener" class="wk-show-more">
+            Show More
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 3: Task Tracker -->
+      <div class="wk-card fade-up" style="transition-delay:0.15s">
+        <div class="wk-card-img-wrap">
+          <img src="tasktracker.jpeg" alt="Task Tracker">
+        </div>
+        <div class="wk-card-body">
+          <h3 class="wk-card-name">Task Tracker</h3>
+          <ul class="wk-card-points">
+            <li>Interactive calendar with task status dots</li>
+            <li>Three-state task tracking (pending/partial/finished)</li>
+            <li>Weekly &amp; custom-range completion reports</li>
+            <li>Auto-calculated productivity averages daily</li>
+            <li>Clean mobile app-style UI design</li>
+          </ul>
+          <a href="https://tdtracker.netlify.app/" target="_blank" rel="noopener" class="wk-show-more">
+            Show More
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 4: UPSC Diary -->
+      <div class="wk-card fade-up" style="transition-delay:0.2s">
+        <div class="wk-card-img-wrap">
+          <img src="upsc.jpeg" alt="UPSC Diary">
+        </div>
+        <div class="wk-card-body">
+          <h3 class="wk-card-name">UPSC Diary</h3>
+          <ul class="wk-card-points">
+            <li>Voice-activated AI chatbot for rules</li>
+            <li>Fuzzy search using Levenshtein distance algorithm</li>
+            <li>Multi-language translation (Bengali, Hindi, Urdu)</li>
+            <li>Speech-to-text voice search feature</li>
+            <li>Admin-controlled student approval workflow</li>
+          </ul>
+          <a href="https://shums-edit.github.io/upsc_portfolio/" target="_blank" rel="noopener" class="wk-show-more">
+            Show More
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 5: AI -->
+      <div class="wk-card fade-up" style="transition-delay:0.25s">
+        <div class="wk-card-img-wrap">
+          <img src="ai.jpeg" alt="AI Teaching Assistant">
+        </div>
+        <div class="wk-card-body">
+          <h3 class="wk-card-name">AI</h3>
+          <ul class="wk-card-points">
+            <li>Subject-wise AI Teaching Assistant</li>
+            <li>Auto Question Paper Creator</li>
+            <li>Bloom's Taxonomy Level Selector</li>
+            <li>Smart Attendance Tracker System</li>
+            <li>Real-time Web Search Integration</li>
+          </ul>
+          <a href="https://www.google.com" target="_blank" rel="noopener" class="wk-show-more">
+            Show More
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 6: Alpha Photo Lab -->
+      <div class="wk-card fade-up" style="transition-delay:0.3s">
+        <div class="wk-card-img-wrap">
+          <img src="photolab.jpeg" alt="Alpha Photo Lab">
+        </div>
+        <div class="wk-card-body">
+          <h3 class="wk-card-name">Alpha Photo Lab</h3>
+          <ul class="wk-card-points">
+            <li>Offline photo print layout tool</li>
+            <li>Auto grid with custom copy count</li>
+            <li>Built-in crop and image adjuster</li>
+            <li>Multi-select with border styling control</li>
+            <li>Print-ready output for any paper size</li>
+          </ul>
+          <a href="https://shums-edit.github.io/alpha-tech-photo-studio/" target="_blank" rel="noopener" class="wk-show-more">
+            Show More
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 7: Student Fee Tracker -->
+      <div class="wk-card fade-up" style="transition-delay:0.35s">
+        <div class="wk-card-img-wrap">
+          <img src="feetracker.jpeg" alt="Student Fee Tracker">
+        </div>
+        <div class="wk-card-body">
+          <h3 class="wk-card-name">Student Fee Tracker</h3>
+          <ul class="wk-card-points">
+            <li>Secure SHA-256 hashed login system</li>
+            <li>Auto receipt PDF with unique receipt number</li>
+            <li>Month-wise payment calendar per student</li>
+            <li>Bulk WhatsApp fee reminder system</li>
+            <li>CSV import/export for offline data backup</li>
+          </ul>
+          <a href="https://www.google.com" target="_blank" rel="noopener" class="wk-show-more">
+            Show More
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== FOUNDATIONAL PROJECT ===== -->
+  <section class="wk-wrap">
+    <div class="wk-h-row fade-up">
+      <h2>Foundational <span>Project</span></h2>
+    </div>
+
+    <p class="wk-note fade-up">These foundational projects were developed in the early stages of learning. Their prototypes are no longer available here, but can be viewed on Instagram: <a href="https://www.instagram.com/shums.edit" target="_blank" rel="noopener">@shums.edit</a></p>
+
+    <div class="wk-grid">
+
+      <!-- Card 1: Glossy Calculator -->
+      <div class="wk-card wk-card--plain fade-up" style="transition-delay:0.05s">
+        <div class="wk-card-img-wrap">
+          <img src="cal.jpeg" alt="Glossy Calculator">
+        </div>
+        <div class="wk-card-body">
+          <h3 class="wk-card-name">Glossy Calculator</h3>
+          <ul class="wk-card-points">
+            <li>First-ever coding project, foundational milestone</li>
+            <li>Glassy, colorful glossy-style UI design</li>
+            <li>Basic arithmetic operations, fully functional</li>
+            <li>Light and dark mode toggle</li>
+            <li>Marks the start of coding journey</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Card 2: Teacher Quiz Builder -->
+      <div class="wk-card wk-card--plain fade-up" style="transition-delay:0.1s">
+        <div class="wk-card-img-wrap">
+          <img src="quiz.jpeg" alt="Teacher Quiz Builder">
+        </div>
+        <div class="wk-card-body">
+          <h3 class="wk-card-name">Teacher Quiz Builder</h3>
+          <ul class="wk-card-points">
+            <li>Teacher-controlled question and answer creation</li>
+            <li>Custom timer with auto-submit feature</li>
+            <li>Multiple-choice format, four options each</li>
+            <li>Answers hidden until final submission</li>
+            <li>Auto-generated score and result summary</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Card 3: Railway Fare Calculation -->
+      <div class="wk-card wk-card--plain fade-up" style="transition-delay:0.15s">
+        <div class="wk-card-img-wrap">
+          <img src="railway.jpeg" alt="Railway Fare Calculation">
+        </div>
+        <div class="wk-card-body">
+          <h3 class="wk-card-name">Railway Fare Calculation</h3>
+          <ul class="wk-card-points">
+            <li>Dynamic state-to-city dropdown linking</li>
+            <li>Auto-calculated fare based on distance</li>
+            <li>Source and destination journey selection</li>
+            <li>Real-time city list updates per state</li>
+            <li>First-time dynamic dropdown logic implementation</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Card 4: Live Password Strength Analyzer -->
+      <div class="wk-card wk-card--plain fade-up" style="transition-delay:0.2s">
+        <div class="wk-card-img-wrap">
+          <img src="pass.jpeg" alt="Live Password Strength Analyzer">
+        </div>
+        <div class="wk-card-body">
+          <h3 class="wk-card-name">Live Password Strength Analyzer</h3>
+          <ul class="wk-card-points">
+            <li>3D flip-card login and register UI</li>
+            <li>Real-time password strength validation logic</li>
+            <li>Live color-coded strength indicator bar</li>
+            <li>Checks length, case, digit, symbol rules</li>
+            <li>Smooth animated flip page transition</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Card 5: Valentine Week -->
+      <div class="wk-card wk-card--plain fade-up" style="transition-delay:0.25s">
+        <div class="wk-card-img-wrap">
+          <img src="week.jpeg" alt="Valentine Week">
+        </div>
+        <div class="wk-card-body">
+          <h3 class="wk-card-name">Valentine Week</h3>
+          <ul class="wk-card-points">
+            <li>Eight themed pages, Rose Day to Valentine's</li>
+            <li>Interactive quiz games for each day</li>
+            <li>Curated love letters and shayaris included</li>
+            <li>Daily poetry matching each theme</li>
+            <li>Fully responsive romantic UI design</li>
+            <li>Smooth day-to-day navigation flow</li>
+            <li>Complete standalone mini web project</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== CLIENT WORK ===== -->
+  <section class="wk-wrap">
+    <div class="wk-h-row fade-up">
+      <h2>Client <span>Work</span></h2>
+    </div>
+
+    <div class="wk-grid">
+
+      <!-- Card: Social Media Management for Coaching Consultancy -->
+      <div class="wk-card fade-up" style="transition-delay:0.05s">
+        <div class="wk-card-img-wrap">
+          <img src="edu.jpeg" alt="Client Work — Coaching Consultancy Social Media">
+        </div>
+        <div class="wk-card-body">
+          <h3 class="wk-card-name">Social Media Management — Coaching Consultancy</h3>
+          <ul class="wk-card-points">
+            <li>First social media page managed for a client</li>
+            <li>Daily content creation for coaching consultancy brand</li>
+            <li>Posts highlighting qualified teachers and course offerings</li>
+            <li>Consistent posting strategy built organic engagement</li>
+            <li>Followers grew steadily over two months</li>
+          </ul>
+          <a href="https://www.instagram.com/ek_eduknowledge" target="_blank" rel="noopener" class="wk-show-more">
+            Show Profile
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer id="site-footer" style="padding-bottom:80px;">
+  <div class="footer-line"></div>
+  <div class="footer-inner">
+    <p class="footer-copy">
+      Copyright <span class="copy-sym">&copy;</span> 2018 &nbsp;&mdash;&nbsp; All Rights Reserved by <a href="index.html#top" class="footer-brand">Spark Shums</a>
+    </p>
+  </div>
+</footer>
+
+<!-- ===== SMART SCROLL ARROW ===== -->
+<button id="smartArrow" aria-label="Scroll">
+  <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+  <span class="arrow-label">Scroll</span>
+</button>
+
+<script src="shared.js"></script>
+</body>
+</html>

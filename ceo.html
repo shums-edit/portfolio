@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta name="theme-color" content="#020c1b">
+<title>CEO — Spark Shums</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&family=Share+Tech+Mono&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=4">
+<style>
+
+/* ===== CEO HERO SECTION ===== */
+#ceo-hero {
+  position: relative;
+  z-index: 10;
+  min-height: calc(100vh - var(--nav-h));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px 80px;
+  gap: 50px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+@media(min-width:820px){
+  #ceo-hero {
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 80px 8% 80px 8%;
+    padding: 80px 8% 80px 10%;
+    gap: 0;
+  }
+}
+
+/* ── Mobile reorder: heading first, photo second, bio+sig third ── */
+.ceo-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
+  max-width: 560px;
+  padding: 0 4px;
+}
+@media(min-width:820px){
+  .ceo-text {
+    align-items: flex-start;
+    text-align: left;
+    padding-right: 50px;
+  }
+}
+/* Bio — order 2 on mobile (before photo) */
+.ceo-bio-only {
+  order: 2;
+  width: 100%;
+}
+/* Signature — order 4 on mobile (after photo), centered */
+.ceo-sig-only {
+  order: 4;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+@media(min-width:820px){
+  .ceo-bio-only { order: unset; }
+  .ceo-sig-only { order: unset; justify-content: flex-start; }
+}
+/* Photo wrap — order 3 on mobile */
+.ceo-photo-wrap {
+  order: 3;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+/* On desktop — restore normal side-by-side */
+@media(min-width:820px){
+  .ceo-text { order: unset; flex-direction: column; padding-right: 50px; }
+  .ceo-bio-sig { order: unset; }
+  .ceo-photo-wrap { order: unset; width: auto; }
+}
+
+/* ===== ACTION BUTTONS ===== */
+.ceo-action-wrap {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 50px 24px 60px;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+@media(min-width:600px){
+  .ceo-action-wrap { flex-direction: row; justify-content: center; gap: 30px; padding: 50px 40px 70px; }
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--blue-glow);
+  border: 1.5px solid rgba(0,212,255,0.45);
+  padding: 14px 28px;
+  background: rgba(0,15,30,0.6);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.3s, box-shadow 0.3s, border-color 0.3s;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  white-space: nowrap;
+}
+.action-btn::before {
+  content:''; position:absolute;
+  top:0; left:0; right:0; height:2px;
+  background: linear-gradient(90deg, transparent, var(--blue-glow), transparent);
+  opacity: 0.6;
+}
+.action-btn svg { width:18px; height:18px; stroke:var(--blue-glow); flex-shrink:0; }
+.action-btn:hover {
+  background: rgba(0,30,55,0.8);
+  box-shadow: 0 0 24px rgba(0,212,255,0.2), 0 0 48px rgba(0,212,255,0.08);
+  border-color: var(--blue-glow);
+}
+.action-btn.active {
+  background: rgba(0,40,70,0.9);
+  box-shadow: 0 0 28px rgba(0,212,255,0.25);
+  border-color: var(--blue-glow);
+}
+.btn-arrow { width:14px!important; height:14px!important; margin-left:4px; }
+
+/* Social group wrapper */
+.action-btn-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Fan container */
+.social-fan {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.social-fan.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Individual social icons */
+.sfan-item {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  display: flex; align-items:center; justify-content:center;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s;
+  transform: translateY(20px) scale(0.5);
+  position: relative;
+}
+.social-fan.open .sfan-item { transform: translateY(0) scale(1); }
+.sfan-item svg { width:20px; height:20px; }
+
+/* Tooltip on hover */
+.sfan-item::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%; transform: translateX(-50%);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  color: var(--white-cold);
+  background: rgba(0,10,24,0.9);
+  border: 1px solid rgba(0,212,255,0.2);
+  padding: 3px 8px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.sfan-item:hover::after { opacity: 1; }
+
+/* Staggered open animation */
+.social-fan.open .sfan-item:nth-child(1){ transition-delay:0.00s; }
+.social-fan.open .sfan-item:nth-child(2){ transition-delay:0.05s; }
+.social-fan.open .sfan-item:nth-child(3){ transition-delay:0.10s; }
+.social-fan.open .sfan-item:nth-child(4){ transition-delay:0.15s; }
+.social-fan.open .sfan-item:nth-child(5){ transition-delay:0.20s; }
+
+/* Brand colours */
+.sfan-wa  { background:#25D366; color:#fff; border-color:#25D366; }
+.sfan-wa:hover  { box-shadow:0 0 16px rgba(37,211,102,0.6); transform:scale(1.15)!important; }
+.sfan-ig  { background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%); color:#fff; border:none; }
+.sfan-ig:hover  { box-shadow:0 0 16px rgba(214,36,159,0.5); transform:scale(1.15)!important; }
+.sfan-fb  { background:#1877F2; color:#fff; border-color:#1877F2; }
+.sfan-fb:hover  { box-shadow:0 0 16px rgba(24,119,242,0.6); transform:scale(1.15)!important; }
+.sfan-yt  { background:#FF0000; color:#fff; border-color:#FF0000; }
+.sfan-yt:hover  { box-shadow:0 0 16px rgba(255,0,0,0.5); transform:scale(1.15)!important; }
+.sfan-tw  { background:#000; color:#fff; border-color:#444; }
+.sfan-tw:hover  { box-shadow:0 0 16px rgba(255,255,255,0.2); transform:scale(1.15)!important; }
+
+
+.ceo-tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--blue-glow);
+  letter-spacing: 0.38em;
+  margin-bottom: 18px;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+}
+.ceo-tag::before {
+  content:''; display:inline-block;
+  width:28px; height:1px;
+  background:var(--blue-glow); box-shadow:0 0 5px var(--blue-glow); flex-shrink:0;
+}
+
+.ceo-welcome {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(1.8rem, 7vw, 3.8rem);
+  font-weight: 900;
+  line-height: 1.05;
+  color: var(--white-cold);
+  text-shadow: 0 0 40px rgba(0,212,255,0.2);
+  margin-bottom: 18px;
+}
+.ceo-welcome .acc { color: var(--blue-glow); text-shadow: var(--text-glow); display:block; }
+
+.ceo-name-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  font-weight: 700;
+  color: var(--blue-glow);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  opacity: 0.85;
+  width: 100%;
+}
+
+.ceo-bio-short {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: clamp(0.95rem, 2.5vw, 1.08rem);
+  color: rgba(220,240,255,0.85);
+  line-height: 1.78;
+  font-weight: 400;
+  margin-bottom: 32px;
+  max-width: 480px;
+  width: 100%;
+}
+
+/* Signature */
+.ceo-signature-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 16px 20px;
+  border-left: 2px solid rgba(0,212,255,0.35);
+  background: rgba(0,20,40,0.3);
+  max-width: 340px;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+@media(min-width:820px){
+  .ceo-signature-block {
+    align-items: flex-start;
+    text-align: left;
+    width: auto;
+  }
+}
+.ceo-sig {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
+  font-weight: 700;
+  color: var(--blue-glow);
+  text-shadow: 0 0 18px rgba(0,212,255,0.6), 0 0 36px rgba(0,212,255,0.3);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+.ceo-sig-dash {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  color: rgba(0,212,255,0.55);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+/* ── Right photo side ── */
+.ceo-photo-wrap {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.ceo-photo-frame {
+  position: relative;
+  width: clamp(220px, 30vw, 290px);
+}
+
+/* Outer rotating ring */
+.ceo-photo-frame::before {
+  content:'';
+  position: absolute;
+  inset: -18px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,212,255,0.2);
+  animation: spinRingCEO 14s linear infinite;
+}
+.ceo-photo-frame::after {
+  content:'';
+  position: absolute;
+  inset: -30px;
+  border-radius: 14px;
+  border: 1px dashed rgba(0,212,255,0.1);
+  animation: spinRingCEO 22s linear infinite reverse;
+}
+@keyframes spinRingCEO { to { transform: rotate(360deg); } }
+
+.ceo-photo {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  border-radius: 8px;
+  border: 2px solid rgba(0,212,255,0.4);
+  box-shadow:
+    0 0 30px rgba(0,212,255,0.2),
+    0 0 60px rgba(0,212,255,0.08),
+    0 0 0 1px rgba(0,212,255,0.1);
+  position: relative;
+  z-index: 2;
+  filter: brightness(1.02) contrast(1.02);
+}
+
+/* HUD corner accents on photo */
+.photo-hud { position: absolute; width:28px; height:28px; z-index:3; }
+.photo-hud::before,.photo-hud::after { content:''; position:absolute; background:var(--blue-glow); opacity:0.7; }
+.photo-hud::before { width:2px; height:14px; }
+.photo-hud::after  { width:14px; height:2px; }
+.ph-tl { top:-2px; left:-2px; }
+.ph-tl::before,.ph-tl::after { top:0;left:0; }
+.ph-tr { top:-2px; right:-2px; transform:scaleX(-1); }
+.ph-tr::before,.ph-tr::after { top:0;left:0; }
+.ph-bl { bottom:-2px; left:-2px; transform:scaleY(-1); }
+.ph-bl::before,.ph-bl::after { top:0;left:0; }
+.ph-br { bottom:-2px; right:-2px; transform:scale(-1); }
+.ph-br::before,.ph-br::after { top:0;left:0; }
+
+/* Role badge */
+.ceo-badge {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,10,24,0.92);
+  border: 1px solid rgba(0,212,255,0.35);
+  padding: 8px 22px;
+  z-index: 4;
+  white-space: nowrap;
+  box-shadow: 0 0 20px rgba(0,212,255,0.15);
+}
+.ceo-badge::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background: linear-gradient(90deg, transparent, var(--blue-glow), transparent);
+}
+.ceo-badge-name {
+  font-family:'Orbitron',monospace;
+  font-size:0.75rem; font-weight:900;
+  color:var(--white-cold); letter-spacing:0.1em;
+  display:block; text-align:center;
+}
+.ceo-badge-role {
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.55rem; color:var(--blue-glow);
+  letter-spacing:0.25em; text-transform:uppercase;
+  display:block; text-align:center; margin-top:2px;
+}
+
+/* ===== ABOUT SECTION ===== */
+#ceo-about {
+  position: relative;
+  z-index: 10;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 24px;
+}
+@media(min-width:600px){ #ceo-about{ padding:80px 40px; } }
+@media(min-width:900px){ #ceo-about{ padding:80px 80px; } }
+
+.section-heading-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 36px;
+  overflow: visible;
+}
+.section-heading-row::before {
+  content:''; display:block; width:32px; min-width:32px; height:2px;
+  background:var(--blue-glow); box-shadow:0 0 8px var(--blue-glow);
+  flex-shrink:0; margin-top:10px;
+}
+.section-heading-row::after {
+  display:none;
+}
+@media(min-width:700px){
+  .section-heading-row { align-items:center; }
+  .section-heading-row::after {
+    display:block; content:''; flex:1; height:1px;
+    background:linear-gradient(90deg,rgba(0,212,255,0.3),transparent);
+  }
+}
+.section-heading-row h2 {
+  font-family:'Orbitron',monospace;
+  font-size:clamp(0.85rem,3vw,1.5rem);
+  font-weight:900; color:var(--white-cold);
+  letter-spacing:0.06em;
+  white-space:normal;
+  word-break:break-word;
+  line-height:1.3;
+}
+.section-heading-row h2 span { color:var(--blue-glow); }
+
+.about-text {
+  font-family:'Rajdhani',sans-serif;
+  font-size:clamp(1rem,2.5vw,1.1rem);
+  color:rgba(220,240,255,0.88);
+  line-height:1.85; font-weight:400;
+  display:flex; flex-direction:column; gap:22px;
+}
+.about-text p { letter-spacing:0.02em; }
+
+/* Stats strip */
+.ceo-stats-strip {
+  display:grid;
+  grid-template-columns: repeat(2,1fr);
+  gap:14px;
+  margin-top:36px;
+}
+@media(min-width:500px){ .ceo-stats-strip{ grid-template-columns:repeat(4,1fr); } }
+
+.css-stat {
+  padding:16px 14px;
+  border:1px solid rgba(0,212,255,0.12);
+  border-top:2px solid rgba(0,212,255,0.45);
+  background:rgba(0,20,40,0.35);
+  text-align:center;
+}
+.css-stat strong {
+  display:block;
+  font-family:'Orbitron',monospace;
+  font-size:clamp(1.2rem,3vw,1.6rem);
+  font-weight:900; color:var(--blue-glow);
+  text-shadow:0 0 12px rgba(0,212,255,0.6);
+}
+.css-stat span {
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.58rem; color:rgba(0,212,255,0.55);
+  letter-spacing:0.12em; text-transform:uppercase;
+  margin-top:4px; display:block;
+}
+
+/* Skills */
+.ceo-skills-wrap {
+  margin-top:40px;
+}
+.skills-title {
+  font-family:'Orbitron',monospace;
+  font-size:0.72rem; font-weight:700;
+  color:var(--white-cold); letter-spacing:0.18em;
+  text-transform:uppercase; margin-bottom:18px;
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(0,212,255,0.15);
+  position:relative;
+}
+.skills-title::after {
+  content:''; position:absolute; bottom:-1px; left:0;
+  width:36px; height:2px;
+  background:var(--blue-glow); box-shadow:0 0 6px var(--blue-glow);
+}
+.skills-grid {
+  display:grid;
+  grid-template-columns:1fr;
+  gap:14px;
+}
+@media(min-width:600px){ .skills-grid{ grid-template-columns:1fr 1fr; gap:14px 40px; } }
+
+.skill-item {}
+.skill-top {
+  display:flex; justify-content:space-between; margin-bottom:5px;
+}
+.skill-name {
+  font-family:'Rajdhani',sans-serif;
+  font-size:0.92rem; font-weight:600;
+  color:rgba(200,230,255,0.9);
+}
+.skill-pct {
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.65rem; color:var(--blue-glow);
+}
+.skill-track {
+  height:4px; background:rgba(0,212,255,0.1);
+  border-radius:2px; overflow:hidden;
+}
+.skill-fill {
+  height:100%;
+  background:linear-gradient(90deg,rgba(0,212,255,0.5),var(--blue-glow));
+  box-shadow:0 0 8px rgba(0,212,255,0.5);
+  border-radius:2px; width:0%;
+  transition:width 1.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* Section divider */
+.sec-divider {
+  width:100%; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,212,255,0.2),transparent);
+  position:relative; z-index:10;
+}
+
+/* ===== MESSAGE SECTION ===== */
+#ceo-message {
+  position:relative; z-index:10;
+  max-width:1100px; margin:0 auto;
+  padding:0 24px 80px;
+}
+@media(min-width:600px){ #ceo-message{ padding:0 40px 80px; } }
+@media(min-width:900px){ #ceo-message{ padding:0 80px 100px; } }
+
+.message-box {
+  background: rgba(0,15,30,0.6);
+  border: 1px solid rgba(0,212,255,0.15);
+  border-left: 3px solid var(--blue-glow);
+  padding: 36px 30px;
+  position: relative;
+  box-shadow: 0 0 40px rgba(0,212,255,0.05), inset 0 0 30px rgba(0,212,255,0.02);
+}
+.message-box::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,var(--blue-glow),transparent);
+}
+.message-quote {
+  font-family:'Share Tech Mono',monospace;
+  font-size:clamp(2rem,8vw,4rem);
+  color:rgba(0,212,255,0.15);
+  line-height:1; margin-bottom:8px;
+  text-shadow:0 0 20px rgba(0,212,255,0.2);
+}
+.message-text {
+  font-family:'Rajdhani',sans-serif;
+  font-size:clamp(1rem,2.5vw,1.1rem);
+  color:rgba(220,240,255,0.88);
+  line-height:1.85; font-weight:400;
+  display:flex; flex-direction:column; gap:20px;
+}
+.message-text p { letter-spacing:0.02em; }
+
+/* Language tags */
+.lang-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+.lang-tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(0.65rem, 1.3vw, 0.82rem);
+  color: var(--blue-glow);
+  border: 1px solid rgba(0,212,255,0.5);
+  background: rgba(0,25,50,0.55);
+  padding: clamp(7px,1vw,10px) clamp(14px,1.5vw,20px);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: background 0.2s, box-shadow 0.2s;
+  text-shadow: 0 0 8px rgba(0,212,255,0.5);
+}
+.lang-tag:hover {
+  background: rgba(0,40,70,0.7);
+  box-shadow: 0 0 12px rgba(0,212,255,0.2);
+}
+
+/* ===== WORK EXPERIENCE TIMELINE ===== */
+#ceo-experience {
+  position: relative; z-index: 10;
+  max-width: 1100px; margin: 0 auto;
+  padding: 0 24px 80px;
+}
+@media(min-width:600px){ #ceo-experience{ padding: 0 40px 80px; } }
+@media(min-width:900px){ #ceo-experience{ padding: 0 80px 100px; } }
+
+.exp-timeline {
+  position: relative;
+  padding-left: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+/* Vertical line */
+.exp-timeline::before {
+  content: '';
+  position: absolute;
+  left: 7px; top: 8px; bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--blue-glow), rgba(0,212,255,0.1));
+}
+
+.exp-card {
+  position: relative;
+  padding: 28px 28px 28px 24px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(0,212,255,0.18);
+  border-left: 3px solid rgba(0,212,255,0.6);
+  background: rgba(0,15,30,0.5);
+  transition: border-color 0.3s, background 0.3s, transform 0.3s;
+}
+.exp-card:hover {
+  border-left-color: var(--blue-glow);
+  border-color: rgba(0,212,255,0.2);
+  background: rgba(0,25,45,0.55);
+  transform: translateX(4px);
+  box-shadow: -3px 0 14px rgba(0,212,255,0.12);
+}
+
+/* Timeline dot */
+.exp-dot {
+  position: absolute;
+  left: -32px; top: 28px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--blue-glow);
+  background: var(--blue-deep);
+  box-shadow: 0 0 12px rgba(0,212,255,0.7), 0 0 24px rgba(0,212,255,0.3);
+  z-index: 2;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+.exp-card:hover .exp-dot {
+  background: var(--blue-glow);
+  box-shadow: 0 0 16px rgba(0,212,255,0.8), 0 0 32px rgba(0,212,255,0.4);
+}
+
+/* Touch devices have no real hover — keep every dot permanently filled */
+@media (hover: none) {
+  .exp-dot {
+    background: var(--blue-glow);
+    box-shadow: 0 0 16px rgba(0,212,255,0.8), 0 0 32px rgba(0,212,255,0.4);
+  }
+}
+
+.exp-year {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(0.72rem, 1.5vw, 0.95rem);
+  color: rgba(0,212,255,0.9);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(0,212,255,0.5);
+}
+
+.exp-role {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(1.05rem, 2.5vw, 1.35rem);
+  font-weight: 700;
+  color: var(--white-cold);
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+  text-shadow: 0 0 24px rgba(0,212,255,0.3);
+}
+
+.exp-company {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(0.72rem, 1.5vw, 0.9rem);
+  color: var(--blue-glow);
+  letter-spacing: 0.18em;
+  margin-bottom: 16px;
+  text-shadow: 0 0 10px rgba(0,212,255,0.6);
+  font-weight: 700;
+}
+
+.exp-desc {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: clamp(1rem, 2vw, 1.12rem);
+  color: rgba(220,240,255,0.92);
+  line-height: 1.8;
+  font-weight: 500;
+  margin-bottom: 18px;
+}
+
+.exp-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.exp-tags span {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(0.58rem, 1.2vw, 0.72rem);
+  color: rgba(0,212,255,0.95);
+  border: 1px solid rgba(0,212,255,0.45);
+  background: rgba(0,25,50,0.6);
+  padding: clamp(5px,1vw,8px) clamp(10px,1.5vw,16px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow: 0 0 6px rgba(0,212,255,0.4);
+}
+
+.message-highlight {
+  color:var(--blue-glow);
+  font-weight:600;
+  text-shadow:0 0 10px rgba(0,212,255,0.4);
+}
+
+
+/* Fix centering - all sections full width, content centered inside */
+.page-wrapper {
+  width: 100%;
+  overflow-x: hidden;
+}
+#ceo-hero {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+#ceo-about, #ceo-message, #ceo-experience {
+  width: 100%;
+  overflow-x: hidden;
+}
+</style>
+</head>
+<body id="top">
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="hud-corner hud-tl"></div><div class="hud-corner hud-tr"></div>
+<div class="hud-corner hud-bl"></div><div class="hud-corner hud-br"></div>
+<div class="techy-bg">
+  <div class="scanline"></div><div class="scanline"></div><div class="scanline"></div>
+</div>
+
+<!-- Loader -->
+<div id="loader">
+  <canvas id="loaderCanvas" width="260" height="260"></canvas>
+  <div class="loader-label">Loading CEO</div>
+  <div class="loader-pct" id="loaderPct">0%</div>
+</div>
+
+<!-- Header -->
+<header>
+  <a href="index.html" class="logo-mark">
+    <img src="logo.png" alt="Spark Shums" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(0,212,255,0.5);box-shadow:0 0 12px rgba(0,212,255,0.4);">
+  </a>
+  <nav class="nav-desktop">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="ceo.html" class="active">CEO</a>
+    <a href="works.html">Works</a>
+    <a href="achievements.html">Achievements</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <button class="hamburger" id="hamBtn"><span></span><span></span><span></span></button>
+</header>
+<nav class="nav-mobile" id="navM">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="ceo.html" class="active">CEO</a>
+  <a href="works.html">Works</a>
+  <a href="achievements.html">Achievements</a>
+  <a href="contact.html">Contact</a>
+</nav>
+
+<div class="page-wrapper">
+
+  <!-- ===== HERO ===== -->
+  <section id="ceo-hero">
+
+    <!-- MOBILE: heading + name show first (order 1) -->
+    <div class="ceo-text fade-up">
+      <div class="ceo-tag">FOUNDER & CEO — SPARK SHUMS</div>
+      <h1 class="ceo-welcome">
+        Welcome<br>
+        <span class="acc">Our CEO</span>
+      </h1>
+      <div class="ceo-name-title"><span style="white-space:nowrap;">Md Ehtesham</span> &nbsp;·&nbsp; <span style="white-space:nowrap;">"Md Shums"</span></div>
+
+      <!-- Bio shown BEFORE photo on mobile (order 2) -->
+      <div class="ceo-bio-only">
+        <p class="ceo-bio-short">
+          A passionate young entrepreneur, technology enthusiast, and AI learner
+          dedicated to building innovative digital solutions for the future.
+          Founder of Spark Shums since 2018 — combining creativity with
+          technology to create impactful solutions that simplify lives and
+          empower businesses.
+        </p>
+      </div>
+      <!-- Signature shown AFTER photo on mobile (order 4) -->
+      <div class="ceo-sig-only">
+        <div class="ceo-signature-block fade-up" style="transition-delay:0.2s">
+          <span class="ceo-sig">— Md Ehtesham</span>
+          <span class="ceo-sig-dash">// CEO &amp; Founder, Spark Shums</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Photo (order 2 on mobile — between heading and bio) -->
+    <div class="ceo-photo-wrap fade-up" style="transition-delay:0.25s">
+      <div class="ceo-photo-frame">
+        <div class="photo-hud ph-tl"></div>
+        <div class="photo-hud ph-tr"></div>
+        <div class="photo-hud ph-bl"></div>
+        <div class="photo-hud ph-br"></div>
+        <img src="ceo_photo.png" alt="Md Ehtesham — CEO Spark Shums" class="ceo-photo">
+        <div class="ceo-badge">
+          <span class="ceo-badge-name">Md Ehtesham</span>
+          <span class="ceo-badge-role">Founder &amp; CEO</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Section divider -->
+  <div class="sec-divider"></div>
+
+  <!-- ===== ABOUT THE FOUNDER ===== -->
+  <section id="ceo-about">
+
+    <div class="section-heading-row fade-up">
+      <h2>About the <span>Founder</span></h2>
+    </div>
+
+    <div class="about-text fade-up" style="transition-delay:0.1s">
+      <p>
+        <span class="message-highlight">Md Ehtesham</span>, the visionary Founder &amp; CEO, popularly known as
+        <span class="message-highlight">"Md Shums,"</span> is a passionate young entrepreneur, technology
+        enthusiast, and AI learner dedicated to building innovative digital solutions for the future.
+        He completed his Middle School education from <span class="message-highlight">Beacon English School</span>
+        and pursued his High School education in the Science stream from
+        <span class="message-highlight">St Sebastian's School</span>, successfully completing his school journey in 2023.
+      </p>
+      <p>
+        Currently, he is pursuing a <span class="message-highlight">Bachelor of Computer Applications (BCA)</span>
+        from <span class="message-highlight">Amity University</span>, one of India's leading private universities.
+        Along with academics, he has developed strong skills in Web Development, Artificial Intelligence,
+        Database Management, UI/UX Design, Freelancing, and Digital Innovation. His mission is to combine
+        creativity with technology to create impactful solutions that simplify lives and empower businesses.
+      </p>
+      <p>
+        With a strong vision, leadership mindset, and continuous learning attitude,
+        <span class="message-highlight">Md Shums</span> believes that age is never a barrier to success.
+        His dedication toward technology and innovation reflects his dream of inspiring young minds to
+        become <span class="message-highlight">creators rather than just consumers</span> of technology.
+      </p>
+    </div>
+
+    <!-- Stats -->
+    <div class="ceo-stats-strip fade-up" style="transition-delay:0.15s">
+      <div class="css-stat"><strong>2018</strong><span>Founded</span></div>
+      <div class="css-stat"><strong>BCA</strong><span>Amity University</span></div>
+      <div class="css-stat"><strong>7+</strong><span>Skills Mastered</span></div>
+      <div class="css-stat"><strong>∞</strong><span>Vision</span></div>
+    </div>
+
+    <!-- Skills -->
+    <div class="ceo-skills-wrap fade-up" style="transition-delay:0.2s">
+      <div class="skills-title">Core Expertise</div>
+      <div class="skills-grid">
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Web Development</span><span class="skill-pct">92%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-w="92"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Artificial Intelligence</span><span class="skill-pct">80%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-w="80"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Ethical Hacking / Cybersecurity</span><span class="skill-pct">88%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-w="88"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">UI/UX Design</span><span class="skill-pct">85%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-w="85"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Digital Marketing</span><span class="skill-pct">80%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-w="80"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Branding &amp; Strategy</span><span class="skill-pct">87%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-w="87"></div></div>
+        </div>
+      </div>
+
+      <!-- Computer Languages sub-section -->
+      <div class="skills-title" style="margin-top:32px;">Programming Languages</div>
+      <div class="lang-tags">
+        <span class="lang-tag">C</span>
+        <span class="lang-tag">C++</span>
+        <span class="lang-tag">Advanced Java</span>
+        <span class="lang-tag">Advanced Python</span>
+        <span class="lang-tag">Data Structures</span>
+        <span class="lang-tag">HTML</span>
+        <span class="lang-tag">CSS</span>
+        <span class="lang-tag">JavaScript</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Section divider -->
+  <div class="sec-divider"></div>
+
+  <!-- ===== MESSAGE SECTION ===== -->
+  <section id="ceo-message" style="padding-top:70px;">
+
+    <div class="section-heading-row fade-up">
+      <h2>Message for the <span>Youth &amp; AI</span></h2>
+    </div>
+
+    <div class="message-box fade-up" style="transition-delay:0.1s">
+      <div class="message-quote">"</div>
+      <div class="message-text">
+        <p>
+          We are living in a generation where technology is changing the world faster than ever before, and
+          <span class="message-highlight">Artificial Intelligence (AI)</span> is becoming one of the most powerful
+          tools of the modern era. Today's youth have a golden opportunity to learn, innovate, and build something
+          extraordinary with the help of AI and digital technology.
+        </p>
+        <p>
+          <span class="message-highlight">AI is not here to replace human creativity — it is here to enhance it.</span>
+          From education and healthcare to business, security, and communication, AI is transforming every industry
+          and creating endless opportunities for those who are ready to learn.
+          The future belongs to individuals who can adapt, think creatively, and use technology wisely.
+        </p>
+        <p>
+          As young innovators, we should focus on learning skills, solving real-world problems, and using technology
+          to make a positive impact on society. Success does not come only from degrees; it comes from
+          <span class="message-highlight">consistency, vision, and the courage to start something new.</span>
+          Every great achievement begins with a small idea and the determination to turn that idea into reality.
+        </p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Section divider -->
+  <div class="sec-divider"></div>
+
+  <!-- ===== WORK EXPERIENCE ===== -->
+  <section id="ceo-experience" style="padding-top:70px;">
+    <div class="section-heading-row fade-up">
+      <h2>The Journey That <span>Shaped the Vision</span></h2>
+    </div>
+
+    <div class="exp-timeline">
+
+      <!-- Job 1 -->
+      <div class="exp-card fade-up" style="transition-delay:0.05s">
+        <div class="exp-dot"></div>
+        <div class="exp-year">2019 — Present</div>
+        <div class="exp-role">Educator &amp; Mentor</div>
+        <div class="exp-company">// Independent Teaching · 7+ Years</div>
+        <p class="exp-desc">
+          Started teaching in 2019 and never stopped. Over 7+ years of continuous teaching experience
+          that built a deep understanding of <span class="message-highlight">human psychology, behaviour, and learning patterns.</span>
+          Developed exceptional skills in public speaking, simplifying complex concepts, and understanding
+          how different minds think — whether students, parents, or professionals.
+          Teaching isn't just a job — it's where leadership and empathy were forged.
+        </p>
+        <div class="exp-tags">
+          <span>Public Speaking</span><span>Human Psychology</span>
+          <span>Mentoring</span><span>Communication</span>
+        </div>
+      </div>
+
+      <!-- Job 2 -->
+      <div class="exp-card fade-up" style="transition-delay:0.1s">
+        <div class="exp-dot"></div>
+        <div class="exp-year">2023 — 1 Year</div>
+        <div class="exp-role">Freelancer</div>
+        <div class="exp-company">// Independent · Digital Services</div>
+        <p class="exp-desc">
+          Ventured into the world of freelancing and delivered end-to-end digital solutions independently.
+          Built a diverse portfolio spanning web and creative domains — proving that
+          <span class="message-highlight">skills, consistency, and client trust</span> can build a brand from scratch.
+        </p>
+        <div class="exp-tags">
+          <span>Web Pages &amp; Web Apps</span><span>Graphics Designing</span>
+          <span>Social Media Marketing</span><span>Post Creation</span>
+          <span>Wedding Card Design</span><span>Invitation Cards</span>
+        </div>
+      </div>
+
+      <!-- Job 3 -->
+      <div class="exp-card fade-up" style="transition-delay:0.15s">
+        <div class="exp-dot"></div>
+        <div class="exp-year">2024 · 6 Months</div>
+        <div class="exp-role">SME — Subject Matter Expert</div>
+        <div class="exp-company">// Tutor Consortium</div>
+        <p class="exp-desc">
+          Joined Tutor Consortium as a <span class="message-highlight">Subject Matter Expert</span>,
+          responsible for reviewing and validating questions and answers on the Brainly platform.
+          This role sharpened analytical thinking, quality assessment skills, and domain expertise
+          across multiple academic subjects.
+        </p>
+        <div class="exp-tags">
+          <span>Quality Review</span><span>Subject Expertise</span>
+          <span>Content Validation</span><span>Brainly Platform</span>
+        </div>
+      </div>
+
+      <!-- Job 4 -->
+      <div class="exp-card fade-up" style="transition-delay:0.2s">
+        <div class="exp-dot"></div>
+        <div class="exp-year">2025 · 1 Year</div>
+        <div class="exp-role">Process Associate</div>
+        <div class="exp-company">// Wipro · US Health Sector</div>
+        <p class="exp-desc">
+          Joined <span class="message-highlight">Wipro</span> — one of the world's top multinational corporations —
+          as a Process Associate, working within the <span class="message-highlight">US Health Sector.</span>
+          This experience brought exposure to enterprise-level operations, international work culture,
+          professional discipline, and the complexity of global business processes.
+          A defining chapter that proved that ambition backed by skill has no limits.
+        </p>
+        <div class="exp-tags">
+          <span>Wipro MNC</span><span>US Health Sector</span>
+          <span>Process Management</span><span>Enterprise Operations</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<!-- ===== SOCIAL & PROJECT BUTTONS ===== -->
+<div class="ceo-action-wrap">
+
+  <!-- Social Media Button -->
+  <div class="action-btn-group" id="socialGroup">
+    <button class="action-btn social-btn" id="socialToggle" aria-label="Social Media">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      <span>Social Media</span>
+    </button>
+    <!-- Fan-out social icons -->
+    <div class="social-fan" id="socialFan">
+      <a href="https://wa.me/917439645023" class="sfan-item sfan-wa" target="_blank" data-label="WhatsApp" title="WhatsApp">
+        <svg viewBox="0 0 175.216 175.552" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+          <path d="M87.184 0C39.032 0 0 39.035 0 87.188c0 15.032 3.846 29.696 11.193 42.638L.387 174.086c-.44 1.68.05 3.47 1.277 4.7a4.695 4.695 0 0 0 4.7 1.278l45.15-10.807a87.06 87.06 0 0 0 35.67 7.655c48.152 0 87.184-39.032 87.184-87.188C174.368 39.035 135.336 0 87.184 0zm0 159.74a72.74 72.74 0 0 1-37.103-10.14l-2.658-1.58-27.53 6.59 6.585-27.055-1.63-2.73A72.584 72.584 0 0 1 14.37 87.188c0-40.135 32.68-72.82 72.814-72.82 40.132 0 72.812 32.685 72.812 72.82 0 40.133-32.68 72.552-72.812 72.552z"/>
+          <path d="M127.39 103.26c-2.195-1.1-12.99-6.408-15.01-7.137-2.018-.73-3.487-1.1-4.955 1.098-1.467 2.197-5.685 7.137-6.97 8.605-1.284 1.467-2.567 1.65-4.763.55-2.196-1.1-9.27-3.415-17.655-10.9-6.524-5.824-10.928-13.014-12.21-15.212-1.284-2.196-.137-3.383.965-4.477.99-.983 2.196-2.564 3.294-3.848 1.098-1.283 1.466-2.197 2.197-3.664.73-1.466.366-2.75-.183-3.848-.549-1.1-4.955-11.95-6.79-16.36-1.788-4.298-3.604-3.714-4.954-3.783-1.284-.064-2.75-.077-4.218-.077-1.467 0-3.847.55-5.864 2.747-2.018 2.197-7.704 7.53-7.704 18.37 0 10.84 7.887 21.313 8.985 22.78 1.1 1.467 15.523 23.696 37.607 33.236 5.254 2.268 9.352 3.62 12.548 4.636 5.273 1.674 10.07 1.438 13.865.872 4.23-.632 13.02-5.318 14.856-10.45 1.832-5.132 1.832-9.532 1.283-10.45-.55-.916-2.016-1.467-4.212-2.565z"/>
+        </svg>
+      </a>
+      <a href="https://www.instagram.com/shums.edit" class="sfan-item sfan-ig" target="_blank" data-label="Instagram" title="Instagram">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+      </a>
+      <a href="#" class="sfan-item sfan-fb" target="_blank" data-label="Facebook" title="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <a href="https://www.youtube.com/@shums_edits" class="sfan-item sfan-yt" target="_blank" data-label="YouTube" title="YouTube">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+      </a>
+      <a href="#" class="sfan-item sfan-tw" target="_blank" data-label="Twitter / X" title="Twitter / X">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Project Arena Button -->
+  <a href="works.html" class="action-btn project-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 8l3 3-3 3M13 14h4"/></svg>
+    <span>Project Arena</span>
+    <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
+
+</div>
+
+<!-- Footer -->
+<footer id="site-footer" style="width:100%;box-sizing:border-box;">
+  <div class="footer-line"></div>
+  <div class="footer-inner" style="display:flex;align-items:center;justify-content:center;width:100%;padding:0 24px;box-sizing:border-box;">
+    <p class="footer-copy" style="text-align:center;width:100%;">
+      Copyright <span class="copy-sym">&copy;</span> 2018 &nbsp;&mdash;&nbsp; All Rights Reserved by
+      <a href="index.html#top" class="footer-brand">Spark Shums</a>
+    </p>
+  </div>
+</footer>
+
+<button id="smartArrow" aria-label="Scroll">
+  <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+  <span class="arrow-label">Scroll</span>
+</button>
+
+<script src="shared.js"></script>
+<script>
+// Hamburger handled by shared.js
+
+// Skill bars animate when visible
+const skillObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.skill-fill').forEach(b=>{ b.style.width=b.dataset.w+'%'; });
+      skillObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.3});
+document.querySelectorAll('.ceo-skills-wrap').forEach(el=>skillObs.observe(el));
+
+// ── Social fan toggle ──
+(function(){
+  const btn = document.getElementById('socialToggle');
+  const fan = document.getElementById('socialFan');
+  if(!btn||!fan) return;
+  btn.addEventListener('click',()=>{
+    fan.classList.toggle('open');
+    btn.classList.toggle('active');
+    btn.querySelector('span').textContent = fan.classList.contains('open') ? 'Close' : 'Social Media';
+  });
+  // Close when clicking outside
+  document.addEventListener('click',e=>{
+    if(!document.getElementById('socialGroup').contains(e.target)){
+      fan.classList.remove('open');
+      btn.classList.remove('active');
+      btn.querySelector('span').textContent = 'Social Media';
+    }
+  });
+})();
+
+</script>
+</body>
+</html>
